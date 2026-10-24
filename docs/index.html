@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>サイト公開の手順｜Cloudflare</title>
-<meta name="description" content="契約からWebサイト公開まで、お客様と制作側がそれぞれ何をするかを7段階・1ステップずつまとめた手順書（Cloudflare Pages）。">
+<meta name="description" content="メールでのご案内から、2回の面談でWebサイトを公開するまでの流れ。お客様と制作側がそれぞれ何をするかを1ステップずつまとめた手順書（Cloudflare Pages）。">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="サイト公開の手順｜Cloudflare">
-<meta property="og:description" content="契約からWebサイト公開まで、お客様と制作側がそれぞれ何をするかを7段階でまとめた手順書。">
+<meta property="og:description" content="会うのは2回、2回目が公開日。お客様と制作側の手順書。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@600;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -84,7 +84,7 @@ strong{font-weight:700;background:linear-gradient(transparent 62%,var(--accent-s
 .steps .bar-p{display:block;height:3px;background:var(--rule);border-radius:2px;margin-top:8px;overflow:hidden}
 .steps .bar-p i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
 .steps li.key a{background:var(--accent-soft)}
-.steps li.key .t::after{content:"いちばん大事";font-size:11px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:2px;display:inline-block;white-space:nowrap}
+.steps li.key .t::after{content:"公開日";font-size:11px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:2px;display:inline-block;white-space:nowrap}
 
 .gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:40px 0 0}
 .gloss div{background:var(--card);padding:16px 18px;box-shadow:0 0 0 1px var(--rule)}
@@ -180,6 +180,27 @@ body[data-f="client"] .steps a, body[data-f="me"] .steps a{grid-template-columns
   .tbl td{border:0;padding:2px 0}
   .tbl td:not(:first-child){font-size:14px;color:var(--ink-2)}
 }
+
+.steps li.key .t::after{background:var(--accent)}
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0 0}
+.verdict>div{border-radius:12px;padding:18px 20px;font-size:15px}
+.verdict ul{margin:6px 0 0;padding-left:1.1em;line-height:1.75}
+.verdict li{margin:4px 0}
+.verdict .lbl{display:block;font-size:13px;letter-spacing:.06em}
+.v-yes{background:var(--client-soft)} .v-yes .lbl{color:var(--client)}
+.v-no{background:var(--warn-soft)} .v-no .lbl{color:var(--warn)}
+.agenda{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink)}
+.agenda li{padding:14px 14px 14px 0;border-right:1px solid var(--rule);margin-right:14px}
+.agenda li:last-child{border-right:0;margin-right:0}
+.agenda .am{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent);letter-spacing:.06em}
+.agenda .ab{font-size:14px;color:var(--ink-2);line-height:1.65}
+.agenda .ab b{display:block;font-size:16px;color:var(--ink);margin:4px 0 2px}
+ol.do b{font-weight:700}
+@media (max-width:640px){
+  .verdict{grid-template-columns:1fr}
+  .agenda{grid-template-columns:1fr}
+  .agenda li{border-right:0;margin-right:0;border-bottom:1px solid var(--rule);padding:12px 0;display:grid;grid-template-columns:84px 1fr;gap:10px}
+}
 </style>
 </head>
 <body data-f="all">
@@ -200,317 +221,352 @@ body[data-f="client"] .steps a, body[data-f="me"] .steps a{grid-template-columns
 
 <section class="hero">
   <p class="kicker">Website launch · Cloudflare Pages</p>
-  <h1><span style="display:inline-block">契約から</span><span style="display:inline-block">公開まで、</span><br><em>7</em>つの段階。</h1>
-  <p class="lead">早ければ2〜3週間、確認待ちが長いと1〜2か月。お客様と制作側がそれぞれ何をするかを、1ステップずつ分けて書いています。上の「表示」で自分の担当だけに絞れます。チェック欄はこの端末に保存されます。</p>
+  <h1><span style="display:inline-block">会うのは</span><span style="display:inline-block">2回。</span><br><em>2</em>回目が公開日。</h1>
+  <p class="lead">メールでご案内 → 1回目でサイトを見ていただき、料金と流れをご説明 → 2回目の面談中にサイトを公開。間はオンラインでやり取りします。お客様と制作側がそれぞれ何をするかを、1ステップずつ分けて書いています。</p>
   <div class="meta"><span>2026年10月時点</span><span>サイトの置き場所：Cloudflare Pages</span><span>ドメインの管理会社はそのまま</span></div>
   <div class="legend"><span class="chip client"><i></i>お客様がやること</span><span class="chip me"><i></i>制作側がやること</span></div>
 </section>
 
 <section class="overview">
   <h2 class="h2s">全体の流れ</h2>
-  <p class="sub">いちばん大事なのは、段階4（ドメインの引っ越し）でメールを止めないことです。</p>
+  <p class="sub">2回目で公開できるかどうかは、<strong>2回目までの準備</strong>で決まります。特に「ドメインの管理画面にログインできること」が最大の条件です。</p>
   <ol class="steps">
-    <li><a href="#s1"><span class="n">1</span><span><span class="t">準備</span><span class="bar-p"><i data-p="s1"></i></span></span><span class="who c"><b>お客様</b>ドメインのログイン確認・素材・Cloudflare登録と招待</span><span class="who m"><b>制作側</b>今のサイトとDNSを記録</span><span class="d">1〜3日</span></a></li>
-    <li><a href="#s2"><span class="n">2</span><span><span class="t">試作と確認</span><span class="bar-p"><i data-p="s2"></i></span></span><span class="who c"><b>お客様</b>確認用URLを見て直す所を伝える</span><span class="who m"><b>制作側</b>作る・直す</span><span class="d">1〜2週間</span></a></li>
-    <li><a href="#s3"><span class="n">3</span><span><span class="t">Cloudflareに載せる</span><span class="bar-p"><i data-p="s3"></i></span></span><span class="who c"><b>お客様</b>なし</span><span class="who m"><b>制作側</b>Cloudflare Pagesに置く</span><span class="d">30分</span></a></li>
-    <li class="key"><a href="#s4"><span class="n">4</span><span><span class="t">ドメインの引っ越し</span><span class="bar-p"><i data-p="s4"></i></span></span><span class="who c"><b>お客様</b>ネームサーバーを2つ書き換える（画面共有で一緒に）</span><span class="who m"><b>制作側</b>DNSの中身を写して確認</span><span class="d">30分＋待ち〜48時間</span></a></li>
-    <li><a href="#s5"><span class="n">5</span><span><span class="t">ドメインとサイトをつなぐ</span><span class="bar-p"><i data-p="s5"></i></span></span><span class="who c"><b>お客様</b>なし</span><span class="who m"><b>制作側</b>独自ドメイン・www・古いURLの転送</span><span class="d">30分</span></a></li>
-    <li><a href="#s6"><span class="n">6</span><span><span class="t">公開日のチェック</span><span class="bar-p"><i data-p="s6"></i></span></span><span class="who c"><b>お客様</b>メールの送受信・スマホで確認</span><span class="who m"><b>制作側</b>全項目を確認</span><span class="d">1時間</span></a></li>
-    <li><a href="#s7"><span class="n">7</span><span><span class="t">公開後</span><span class="bar-p"><i data-p="s7"></i></span></span><span class="who c"><b>お客様</b>古いサービスの解約・自動更新をオン</span><span class="who m"><b>制作側</b>引き継ぎメモを渡す</span><span class="d">1〜2週間後</span></a></li>
+    <li><a href="#s0"><span class="n">0</span><span><span class="t">メールでご案内</span><span class="bar-p"><i data-p="s0"></i></span></span><span class="who c"><b>お客様</b>試作を見て、興味があれば面談を予約</span><span class="who m"><b>制作側</b>試作URL付きのメールを送る</span><span class="d">—</span></a></li>
+    <li><a href="#s1"><span class="n">1</span><span><span class="t">1回目の面談</span><span class="bar-p"><i data-p="s1"></i></span></span><span class="who c"><b>お客様</b>試作を見る・料金と流れを聞く・その場でドメインのログイン確認</span><span class="who m"><b>制作側</b>見せる・料金・流れ・2回目の日を決める</span><span class="d">60分</span></a></li>
+    <li><a href="#s2"><span class="n">2</span><span><span class="t">あいだ（オンライン）</span><span class="bar-p"><i data-p="s2"></i></span></span><span class="who c"><b>お客様</b>素材・修正依頼・OK・着手金</span><span class="who m"><b>制作側</b>修正・Cloudflareの準備を全部済ませる</span><span class="d">1〜2週間</span></a></li>
+    <li class="key"><a href="#s3"><span class="n">3</span><span><span class="t">2回目の面談＝公開日</span><span class="bar-p"><i data-p="s3"></i></span></span><span class="who c"><b>お客様</b>ネームサーバーを書き換える（一緒に）・メールを試す</span><span class="who m"><b>制作側</b>切り替え・チェック・引き継ぎ</span><span class="d">90〜120分</span></a></li>
+    <li><a href="#s4"><span class="n">4</span><span><span class="t">終わらなかったとき</span><span class="bar-p"><i data-p="s4"></i></span></span><span class="who c"><b>お客様</b>多くはLINEで確認するだけ</span><span class="who m"><b>制作側</b>オンラインで仕上げる／3回目を決める</span><span class="d">当日夜〜</span></a></li>
+    <li><a href="#s5"><span class="n">5</span><span><span class="t">公開後</span><span class="bar-p"><i data-p="s5"></i></span></span><span class="who c"><b>お客様</b>古いサービスの解約・自動更新をオン</span><span class="who m"><b>制作側</b>404の確認・残金の請求</span><span class="d">1〜2週間後</span></a></li>
   </ol>
+
+  <div class="verdict">
+    <div class="v-yes"><b class="lbl">2回目で公開できる条件</b>
+      <ul>
+        <li>お客様がドメインの管理画面にログインできる</li>
+        <li>修正の締め切り（2回目の3日前）までに「これでOK」が出ている</li>
+        <li>今のメールの種類が分かっている</li>
+        <li>2回目を午前〜昼すぎに入れている（待ち時間を面談中に吸収するため）</li>
+      </ul>
+    </div>
+    <div class="v-no"><b class="lbl">3回目が必要になるとき</b>
+      <ul>
+        <li>ドメインが前の業者の名義で、ログインが取れていない</li>
+        <li>修正が締め切りに間に合わない、ページの追加など大きな変更が出た</li>
+        <li>メールが古いサーバーに付いていて、メールの引っ越しが先に要る</li>
+      </ul>
+    </div>
+  </div>
 
   <dl class="gloss">
     <div><dt>ドメイン</dt><dd>サイトの住所（例：example.com.au）。毎年お金を払って借りているもの。</dd></div>
     <div><dt>ドメイン管理会社</dt><dd>ドメインを買った会社。GoDaddy、VentraIP、Crazy Domains、Wix、Squarespace など。</dd></div>
     <div><dt>Cloudflare<small>クラウドフレア</small></dt><dd>サイトの置き場所と、ドメインの案内係を無料で引き受けてくれるサービス。</dd></div>
     <div><dt>DNS<small>ディーエヌエス</small></dt><dd>「このドメインのサイトはここ、メールはここ」という案内表。</dd></div>
-    <div><dt>ネームサーバー</dt><dd>その案内表をどの会社が持つかの指定。これをCloudflareに変えるのが段階4。</dd></div>
+    <div><dt>ネームサーバー</dt><dd>その案内表をどの会社が持つかの指定。2回目の面談で、これをCloudflareに書き換えます。</dd></div>
   </dl>
 </section>
 
-<!-- 1 -->
-<section class="stage" id="s1">
-  <div class="stage-head reveal"><span class="stage-num">1</span><span class="stage-tag">STAGE 01 · 1〜3日</span><h2>契約直後の準備</h2></div>
-  <p class="lead2">ここで止まると全部が遅れます。特に「ドメイン管理会社にログインできるか」は、最初の週に必ず確かめます。</p>
-  <p class="progress" data-prog="s1"></p>
-
-  <div class="role client reveal">
-    <div class="role-h"><h3>お客様がやること</h3></div>
-    <ul class="check">
-      <li><input type="checkbox" id="s1c1"><label for="s1c1">ドメインをどこで買ったか確かめる（分からなければ制作側が調べます）</label></li>
-      <li><input type="checkbox" id="s1c2"><label for="s1c2">その会社の管理画面に、自分でログインできるか試す。パスワードが分からないときは今のうちに再設定する</label></li>
-      <li><input type="checkbox" id="s1c3"><label for="s1c3">前の制作会社や知り合いがドメインを持っている場合は、その人に連絡してログインをもらう（いちばん時間がかかるので最初に）</label></li>
-      <li><input type="checkbox" id="s1c4"><label for="s1c4">今のメールは何で使っているか教える（Gmailの会社版＝Google Workspace、Outlook＝Microsoft 365、サーバー付属のメール、など）</label></li>
-      <li><input type="checkbox" id="s1c5"><label for="s1c5">今のサイトをどこで作っているか教える（Wix、Squarespace、WordPress など）。<strong>解約はまだしない</strong></label></li>
-      <li><input type="checkbox" id="s1c6"><label for="s1c6">ロゴ・写真・文章・営業時間・住所・電話番号などの素材を送る（Googleドライブや LINE でOK）</label></li>
-      <li><input type="checkbox" id="s1c7"><label for="s1c7">Cloudflareの無料アカウントを作り、制作側を招待する（下の手順）</label></li>
-    </ul>
-    <h4>Cloudflareアカウントの作り方</h4>
-    <ol class="do">
-      <li><code>dash.cloudflare.com/sign-up</code> を開く</li>
-      <li>お店の共有メールアドレスとパスワードを入れて登録（個人のアドレスより、担当が変わっても困らないアドレスがおすすめ）</li>
-      <li>届いた確認メールのボタンを押す</li>
-      <li>右上の人のマーク → Profile → Authentication で、2段階認証（スマホの認証アプリ）をオンにする</li>
-      <li>左のメニューの Manage Account → Members → Invite で、制作側のメールアドレスを招待する（権限は Administrator）</li>
-    </ol>
-    <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。</div>
-  </div>
+<!-- 0 -->
+<section class="stage" id="s0">
+  <div class="stage-head reveal"><span class="stage-num">0</span><span class="stage-tag">STEP 00 · メール</span><h2>メールでご案内</h2></div>
+  <p class="lead2">お店に合わせた試作サイトのURLを付けて、初回のメールを送ります。興味を持っていただけたら、1回目の面談を予約してもらいます。</p>
+  <p class="progress" data-prog="s0"></p>
 
   <div class="role me reveal">
     <div class="role-h"><h3>制作側がやること</h3></div>
     <ul class="check">
-      <li><input type="checkbox" id="s1m1"><label for="s1m1">招待メールを受けて、お客様のアカウントに入れるか確かめる</label></li>
-      <li><input type="checkbox" id="s1m2"><label for="s1m2">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auda.org.au の WHOIS でも可）。Registrar の欄を見る</label></li>
-      <li><input type="checkbox" id="s1m3"><label for="s1m3">今のDNSを記録する（段階4でメールを止めないため）</label></li>
+      <li><input type="checkbox" id="s0m1"><label for="s0m1">送る直前に、お店が営業中か Google マップで確かめる</label></li>
+      <li><input type="checkbox" id="s0m2"><label for="s0m2">試作URL（〇〇.pages.dev など、検索に出ない設定のもの）と、初回面談の予約ページのリンクを入れて送る</label></li>
+      <li><input type="checkbox" id="s0m3"><label for="s0m3">返信が来たら、面談の日時と場所（お店／カフェ／オンライン）を決める</label></li>
+    </ul>
+  </div>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s0c1"><label for="s0c1">試作サイトをスマホで見てみる</label></li>
+      <li><input type="checkbox" id="s0c2"><label for="s0c2">話を聞いてみたければ、返信か予約ページから面談を予約する</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="stage" id="s1">
+  <div class="stage-head reveal"><span class="stage-num">1</span><span class="stage-tag">STEP 01 · 1回目の面談 · 60分</span><h2>見せる・お金・流れ</h2></div>
+  <p class="lead2">試作を見ていただき、料金と公開までの流れをご説明します。お願いすると決まったら、<strong>その場でドメインのログインまで確かめる</strong>のが、2回目で公開するためのいちばんの近道です。</p>
+  <p class="progress" data-prog="s1"></p>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側：面談の前にやっておくこと</h3><span class="time">前日まで・30分</span></div>
+    <p>ドメインとDNSの情報は誰でも調べられるので、会う前に済ませておきます。</p>
+    <ul class="check">
+      <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auda.org.au の WHOIS でも可）。Registrar の欄を見る</label></li>
+      <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX に google なら Google Workspace、outlook なら Microsoft 365）</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>dig example.com.au NS +short
 dig example.com.au A +short
 dig www.example.com.au CNAME +short
 dig example.com.au MX +short
 dig example.com.au TXT +short
+dig example.com.au DS +short
 dig _dmarc.example.com.au TXT +short
 dig google._domainkey.example.com.au TXT +short
 dig selector1._domainkey.example.com.au CNAME +short</pre></div>
-    <p>結果はそのままテキストで保存。できれば管理会社のDNS画面のスクショももらう（dig では拾えないレコードがあるため）。</p>
     <ul class="check">
-      <li><input type="checkbox" id="s1m4"><label for="s1m4">今のサイトの全ページのURLを一覧にする（<code>/sitemap.xml</code> があればそこから。なければメニューを全部たどる）。段階5で古いURLを転送するため</label></li>
-      <li><input type="checkbox" id="s1m5"><label for="s1m5">今のサイトの文章・画像を保存する（解約したら消える）</label></li>
-      <li><input type="checkbox" id="s1m6"><label for="s1m6">GitHubに非公開のリポジトリを作る</label></li>
+      <li><input type="checkbox" id="s1p3"><label for="s1p3">今のサイトの全ページのURLを一覧にする（<code>/sitemap.xml</code> があればそこから）。旧URLの転送に使う</label></li>
+      <li><input type="checkbox" id="s1p4"><label for="s1p4">持ち物：試作をすぐ見せられるスマホとタブレット、見積もり、申込書（契約書）、このページ</label></li>
     </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側：面談で話す順番</h3></div>
+    <ol class="do">
+      <li><b>見せる（20分）</b>：お客様のスマホで試作を開いてもらい、触ってもらう。気になる所はその場でメモ</li>
+      <li><b>お金（15分）</b>：制作費、支払いのタイミング（例：着手金と公開後の残金）、毎月かかるもの（Cloudflare は0円、ドメイン代は今までどおりお客様が管理会社へ）、保守の有無、デザインとコードの権利</li>
+      <li><b>流れ（10分）</b>：このページの「全体の流れ」を見せる。2回目が公開日であること、それまでにお願いすること、修正の締め切りを伝える</li>
+      <li><b>決める（15分）</b>：下の「その場で決めること」と「その場でやること」</li>
+    </ol>
+  </div>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様：その場で決めること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s1c1"><label for="s1c1">お願いするかどうか（持ち帰りでもOK。その場合は返事の期限を決める）</label></li>
+      <li><input type="checkbox" id="s1c2"><label for="s1c2">2回目の面談（＝公開日）の日時。<strong>平日の午前〜昼すぎ</strong>がおすすめ。金曜の夕方と繁忙日は避ける</label></li>
+      <li><input type="checkbox" id="s1c3"><label for="s1c3">修正をまとめて送る締め切り（2回目の3日前）</label></li>
+      <li><input type="checkbox" id="s1c4"><label for="s1c4">素材（写真・ロゴ・文章）の送り方（Googleドライブ、LINE など）</label></li>
+    </ul>
+  </div>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様：その場でやること</h3><span class="time">お願いすると決まったら・15分</span></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s1c5"><label for="s1c5">ドメイン管理会社（制作側が調べた会社名）の管理画面に、<strong>自分のスマホでログインできるか試す</strong>。パスワードが分からなければ、その場で再設定を始める</label></li>
+      <li><input type="checkbox" id="s1c6"><label for="s1c6">ドメインを前の制作会社や知り合いが持っている場合は、その人に連絡を入れる（ここがいちばん時間がかかる）</label></li>
+      <li><input type="checkbox" id="s1c7"><label for="s1c7">今のメールの使い方を確認する（どのアプリで読んでいるか、パスワードは誰が持っているか）</label></li>
+      <li><input type="checkbox" id="s1c8"><label for="s1c8">Cloudflare の無料アカウントを作り、制作側を招待する（下の手順。時間がなければ宿題に）</label></li>
+    </ul>
+    <h4>Cloudflareアカウントの作り方（5分）</h4>
+    <ol class="do">
+      <li><code>dash.cloudflare.com/sign-up</code> を開く</li>
+      <li>お店の共有メールアドレスとパスワードを入れて登録（担当が変わっても困らないアドレスがおすすめ）</li>
+      <li>届いた確認メールのボタンを押す</li>
+      <li>右上の人のマーク → Profile → Authentication で、2段階認証（スマホの認証アプリ）をオンにする</li>
+      <li>左のメニューの Manage Account → Members → Invite で、制作側のメールアドレスを招待する（権限は Administrator）</li>
+    </ol>
+    <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。</div>
   </div>
 </section>
 
 <!-- 2 -->
 <section class="stage" id="s2">
-  <div class="stage-head reveal"><span class="stage-num">2</span><span class="stage-tag">STAGE 02 · 1〜2週間</span><h2>試作と確認</h2></div>
-  <p class="lead2">公開前のサイトは「〇〇.pages.dev」という確認用URLで見てもらいます。このURLはGoogle検索には出ないようにしてあります。</p>
+  <div class="stage-head reveal"><span class="stage-num">2</span><span class="stage-tag">STEP 02 · あいだ（オンライン）· 1〜2週間</span><h2>2回目までに全部そろえる</h2></div>
+  <p class="lead2">2回目の面談でやるのは「ネームサーバーの書き換え」と「切り替え」だけ、という状態にしておきます。サイトの修正もCloudflareの準備も、この期間に済ませます。</p>
   <p class="progress" data-prog="s2"></p>
 
   <div class="role client reveal">
     <div class="role-h"><h3>お客様がやること</h3></div>
     <ul class="check">
-      <li><input type="checkbox" id="s2c1"><label for="s2c1">確認用URLをスマホとパソコンの両方で開く</label></li>
-      <li><input type="checkbox" id="s2c2"><label for="s2c2">直してほしい所をまとめて送る（スクショ＋一言がいちばん伝わります）</label></li>
-      <li><input type="checkbox" id="s2c3"><label for="s2c3">電話番号・住所・営業時間・料金は、一文字ずつ確かめる（間違いがいちばん困る箇所）</label></li>
+      <li><input type="checkbox" id="s2c1"><label for="s2c1">素材を送る</label></li>
+      <li><input type="checkbox" id="s2c2"><label for="s2c2">確認用URLをスマホとパソコンで見て、直してほしい所をまとめて送る（スクショ＋一言がいちばん伝わります）。<strong>締め切りは2回目の3日前</strong></label></li>
+      <li><input type="checkbox" id="s2c3"><label for="s2c3">電話番号・住所・営業時間・料金は、一文字ずつ確かめる</label></li>
       <li><input type="checkbox" id="s2c4"><label for="s2c4">問い合わせフォームがあれば、自分で送ってみて届くか確かめる</label></li>
-      <li><input type="checkbox" id="s2c5"><label for="s2c5">「これでOK」をメールかメッセージで伝える（これが公開日を決める合図）</label></li>
+      <li><input type="checkbox" id="s2c5"><label for="s2c5">「これでOK」をメールかメッセージで伝える</label></li>
+      <li><input type="checkbox" id="s2c6"><label for="s2c6">着手金を支払う（契約どおり）</label></li>
+      <li><input type="checkbox" id="s2c7"><label for="s2c7">1回目でできなかった場合：ドメインのログイン確認と、Cloudflare の登録・招待</label></li>
+      <li><input type="checkbox" id="s2c8"><label for="s2c8">2回目に、ドメイン管理会社にログインできるスマホかパソコンを持ってくる（確認コードがSMSやメールで届くことがあるので、それを受け取れるもの）</label></li>
     </ul>
   </div>
 
   <div class="role me reveal">
     <div class="role-h"><h3>制作側がやること</h3></div>
+    <h4>A. サイトの仕上げ</h4>
     <ul class="check">
-      <li><input type="checkbox" id="s2m1"><label for="s2m1">直しの回数と範囲を契約どおりに管理する（範囲外は先に追加料金を伝える）</label></li>
-      <li><input type="checkbox" id="s2m2"><label for="s2m2">確認用URLを検索に出さない設定を入れる（段階3の <code>_headers</code>）</label></li>
-      <li><input type="checkbox" id="s2m3"><label for="s2m3">旧サイトの全ページと突き合わせ、情報の抜けがないか確かめる（協賛ロゴ・規約・採用など脇の情報ほど抜ける）</label></li>
-      <li><input type="checkbox" id="s2m4"><label for="s2m4">OKをもらったら、公開日を一緒に決める。<strong>金曜の夕方と店の繁忙日は避ける</strong>（何かあったときすぐ直せるように）</label></li>
-    </ul>
-  </div>
-</section>
-
-<!-- 3 -->
-<section class="stage" id="s3">
-  <div class="stage-head reveal"><span class="stage-num">3</span><span class="stage-tag">STAGE 03 · 30分</span><h2>サイトをCloudflareに載せる</h2></div>
-  <p class="lead2">お客様の作業はありません。制作側が、お客様のCloudflareアカウントの中にサイトを置きます。</p>
-  <p class="progress" data-prog="s3"></p>
-
-  <div class="role me reveal">
-    <div class="role-h"><h3>制作側がやること</h3></div>
-    <h4>A. GitHubとつなぐ方法（おすすめ。push すると自動で更新される）</h4>
-    <ol class="do">
-      <li>dash.cloudflare.com にログインし、左上のアカウント名で<strong>お客様のアカウント</strong>に切り替える（自分のアカウントに作らないよう注意）</li>
-      <li>左メニューの Workers &amp; Pages を開く（Compute の中にあることもある）</li>
-      <li>Create → Pages タブ → Connect to Git</li>
-      <li>GitHub を選び、このサイトのリポジトリだけを許可する（Only select repositories）</li>
-      <li>設定を入れる
-        <ul>
-          <li>Project name：お店の名前を英小文字で（例：shop-name）。これが「〇〇.pages.dev」になる</li>
-          <li>Production branch：main</li>
-          <li>Framework preset：None（手書きのHTMLの場合）</li>
-          <li>Build command：空欄</li>
-          <li>Build output directory：HTMLが入っているフォルダ（リポジトリ直下なら <code>/</code>、public に入れていれば <code>public</code>）</li>
-        </ul>
-      </li>
-      <li>Save and Deploy → 1分ほどで <code>https://〇〇.pages.dev</code> が開けるようになる</li>
-    </ol>
-    <h4>B. 手元から直接上げる方法（GitHubをお客様のアカウントとつなぎたくないとき）</h4>
-    <div class="code"><button type="button">コピー</button><pre>npx wrangler login
-npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
-    <p>ログイン時にお客様のアカウントを選ぶ。Bで作ったプロジェクトは、後からA（GitHub連携）に切り替えられないので、最初にどちらか決める。</p>
-    <h4>確認用URLを検索に出さない設定</h4>
-    <p>HTMLと同じフォルダに <code>_headers</code> というファイルを置く。pages.dev の方だけ検索に出なくなり、本番のドメインには影響しないので、公開時に外し忘れる心配がありません。</p>
-    <div class="code"><button type="button">コピー</button><pre>https://:project.pages.dev/*
-  X-Robots-Tag: noindex</pre></div>
-    <div class="note">補足：Cloudflare は新しい作りの Workers（静的アセット）も勧めていますが、お店のサイトなら Pages で十分です。問い合わせフォームや投稿機能（Workers・D1 を使う部品）を付ける場合も、同じアカウントの中に置きます。</div>
-    <ul class="check">
-      <li><input type="checkbox" id="s3m1"><label for="s3m1">お客様のアカウントに Pages プロジェクトを作った</label></li>
-      <li><input type="checkbox" id="s3m2"><label for="s3m2"><code>〇〇.pages.dev</code> が開ける</label></li>
-      <li><input type="checkbox" id="s3m3"><label for="s3m3"><code>_headers</code> を入れて、<code>curl -sI https://〇〇.pages.dev | grep -i robots</code> で noindex が出る</label></li>
-    </ul>
-  </div>
-</section>
-
-<!-- 4 -->
-<section class="stage" id="s4">
-  <div class="stage-head reveal"><span class="stage-num">4</span><span class="stage-tag">STAGE 04 · 作業30分＋待ち数時間〜48時間</span><h2>ドメインをCloudflareに引っ越す</h2></div>
-  <p class="lead2">ドメインは今の管理会社に残したままで、「案内表（DNS）」の置き場だけをCloudflareに移します。中身をそっくり写してから移すので、<strong>この段階では今のサイトもメールもそのまま動き続けます</strong>。公開日の3〜7日前に済ませておくと、公開日はつなぎ替えるだけになります。</p>
-  <p class="progress" data-prog="s4"></p>
-
-  <div class="role me reveal">
-    <div class="role-h"><h3>制作側がやること（前半）</h3></div>
-    <ol class="do">
-      <li>お客様のCloudflareアカウントで、Account home の Add a domain（または Add a site）を押す</li>
-      <li>ドメイン名を www なしで入れる（例：example.com.au）。Quick scan for DNS records を選んで Continue</li>
-      <li>プランは Free を選ぶ</li>
-      <li>取り込まれたDNSレコードを、段階1で記録したものと<strong>1行ずつ突き合わせる</strong>。足りないものは Add record で足す</li>
-    </ol>
-    <table class="tbl">
-      <thead><tr><th>確かめるもの</th><th>何のため</th><th>注意</th></tr></thead>
-      <tbody>
-        <tr><td>MX（全部）</td><td>メールを受け取る</td><td>優先度（Priority）の数字も同じに</td></tr>
-        <tr><td>TXT：v=spf1 で始まるもの</td><td>メールが迷惑メール扱いされないため</td><td>1つのドメインに1行だけ</td></tr>
-        <tr><td>TXT：_dmarc</td><td>同上</td><td>なければ無理に足さなくてよい</td></tr>
-        <tr><td>TXT または CNAME：〇〇._domainkey（DKIM）</td><td>同上</td><td>Google は google._domainkey、Microsoft は selector1/selector2</td></tr>
-        <tr><td>CNAME：autodiscover</td><td>Outlook の自動設定</td><td>Microsoft 365 の場合</td></tr>
-        <tr><td>TXT：google-site-verification など</td><td>Google や Meta の持ち主確認</td><td>消すと後で確認し直しになる</td></tr>
-        <tr><td>A・CNAME（@ と www）</td><td>今のサイト</td><td>公開日までそのまま。段階5で置き換える</td></tr>
-      </tbody>
-    </table>
-    <ol class="do" start="5" style="counter-reset:s 4">
-      <li>メール関係のレコード（MX の行き先、mail.〇〇、autodiscover など）は、Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
-      <li>Continue を押すと、Cloudflare のネームサーバーが2つ表示される（例：<code>ada.ns.cloudflare.com</code> と <code>bob.ns.cloudflare.com</code>。名前は毎回違う）。メモしてお客様に送る</li>
-      <li>管理会社で DNSSEC がオンになっていないか確かめる（<code>dig example.com.au DS +short</code> で何か出たらオン）。オンなら、次の作業の<strong>前に</strong>オフにしてもらう</li>
-    </ol>
-    <div class="note warn"><b class="lbl">ここを間違えると止まる</b>オレンジの雲のままだとメールが届かなくなります。DNSSEC がオンのままネームサーバーを変えると、サイトもメールもつながらなくなります。</div>
-  </div>
-
-  <div class="role client reveal">
-    <div class="role-h"><h3>お客様がやること</h3><span class="time">15分・画面共有で一緒にやるのがおすすめ</span></div>
-    <ol class="do">
-      <li>ドメイン管理会社にログインする</li>
-      <li>該当のドメインを開き、「ネームサーバー」（Nameservers、DNS servers と書かれていることも）を探す</li>
-      <li>「自分で指定する」（Custom、Use my own nameservers など）を選ぶ</li>
-      <li>今入っているネームサーバーをすべて消し、制作側から届いた2つを入れる（3つ目以降は入れない）</li>
-      <li>保存する。確認メールやSMSが届いたら承認する</li>
-    </ol>
-    <p>画面の名前は会社ごとに違います。見つからなければ、管理会社のヘルプで「change nameservers」と検索するか、そのまま制作側に画面を見せてください。</p>
-    <ul class="check">
-      <li><input type="checkbox" id="s4c1"><label for="s4c1">ネームサーバーを2つに書き換えて保存した</label></li>
-      <li><input type="checkbox" id="s4c2"><label for="s4c2">（DNSSEC がオンだった場合）先にオフにした</label></li>
-    </ul>
-  </div>
-
-  <div class="role me reveal">
-    <div class="role-h"><h3>制作側がやること（後半）</h3></div>
-    <ul class="check">
-      <li><input type="checkbox" id="s4m1"><label for="s4m1">待つ。ふつう数分〜数時間、長いときは48時間ほど。Cloudflare の画面で Check nameservers now を押すと早く確認されることがある</label></li>
-      <li><input type="checkbox" id="s4m2"><label for="s4m2">お客様のアドレスに「Active」のメールが届いたら完了。<code>dig example.com.au NS +short</code> で cloudflare が返ることも確かめる</label></li>
-      <li><input type="checkbox" id="s4m3"><label for="s4m3">お客様に、外のアドレス（個人のGmailなど）とお店のアドレスの間で、<strong>メールを行きも帰りも送ってもらう</strong>。届かないときはすぐにMXとSPFを見直す</label></li>
-      <li><input type="checkbox" id="s4m4"><label for="s4m4">今のサイトがそのまま表示されていることも確かめる</label></li>
-      <li><input type="checkbox" id="s4m5"><label for="s4m5">（任意）DNSSEC を使いたい場合は、Cloudflare の DNS → Settings で有効にし、表示された DS レコードを管理会社に登録してもらう</label></li>
-    </ul>
-  </div>
-</section>
-
-<!-- 5 -->
-<section class="stage" id="s5">
-  <div class="stage-head reveal"><span class="stage-num">5</span><span class="stage-tag">STAGE 05 · 公開日 · 30分</span><h2>独自ドメインをサイトにつなぐ</h2></div>
-  <p class="lead2">公開日にやるのはこの段階です。旧サイトから新サイトへの切り替えは数分で済みます。お客様の作業はありません。</p>
-  <p class="progress" data-prog="s5"></p>
-
-  <div class="role me reveal">
-    <div class="role-h"><h3>制作側がやること</h3></div>
-    <h4>切り替えの前に</h4>
-    <ul class="check">
-      <li><input type="checkbox" id="s5m1"><label for="s5m1"><code>_redirects</code> ファイルを作り、旧サイトのURLを新サイトのページへ転送する（Googleの評価と、お客さんのブックマークを引き継ぐため）</label></li>
+      <li><input type="checkbox" id="s2m1"><label for="s2m1">修正を反映する。範囲外の依頼は先に追加料金を伝える</label></li>
+      <li><input type="checkbox" id="s2m2"><label for="s2m2">旧サイトの全ページと突き合わせ、情報の抜けがないか確かめる（協賛ロゴ・規約・採用など脇の情報ほど抜ける）</label></li>
+      <li><input type="checkbox" id="s2m3"><label for="s2m3"><code>_redirects</code> で旧URLを新しいページへ転送する</label></li>
+      <li><input type="checkbox" id="s2m4"><label for="s2m4"><code>sitemap.xml</code>・<code>robots.txt</code>・canonical を本番ドメインで書いておく</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>/about-us        /about/     301
 /services.html   /services/  301
 /contact-us      /contact/   301
 /blog/*          /news/      301</pre></div>
-    <ul class="check">
-      <li><input type="checkbox" id="s5m2"><label for="s5m2">確認用に HTML へ noindex を入れていたら外す（<code>_headers</code> だけならそのままでOK）</label></li>
-      <li><input type="checkbox" id="s5m3"><label for="s5m3"><code>sitemap.xml</code>、<code>robots.txt</code>、各ページの canonical を本番ドメインにする</label></li>
-      <li><input type="checkbox" id="s5m4"><label for="s5m4">push して pages.dev で最終確認</label></li>
-    </ul>
-    <h4>切り替え</h4>
+
+    <h4>B. お客様のCloudflareにサイトを置く</h4>
     <ol class="do">
-      <li>Cloudflare の DNS → Records で、旧サイト向けの @ と www の A・CNAME を削除する（<strong>メールのレコードは絶対に消さない</strong>）。削除した内容はメモしておく（戻すとき用）</li>
-      <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a custom domain</li>
-      <li><code>example.com.au</code> を入れて Continue → Activate domain（同じアカウント内なのでDNSは自動で作られる）</li>
+      <li>dash.cloudflare.com で、左上のアカウント名から<strong>お客様のアカウント</strong>に切り替える（自分のアカウントに作らない）</li>
+      <li>Workers &amp; Pages（Compute の中にあることも）→ Create → Pages タブ → Connect to Git</li>
+      <li>GitHub のこのサイトのリポジトリだけを許可する（Only select repositories）</li>
+      <li>設定：Project name＝お店の名前を英小文字で（例：shop-name）／Production branch＝main／Framework preset＝None／Build command＝空欄／Build output directory＝HTMLのフォルダ</li>
+      <li>Save and Deploy → <code>https://shop-name.pages.dev</code> が開ける</li>
+    </ol>
+    <p>GitHub をお客様のアカウントとつなぎたくない場合は、手元から直接上げる（後からGitHub連携には切り替えられない）。</p>
+    <div class="code"><button type="button">コピー</button><pre>npx wrangler login
+npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
+    <p>確認用URLを検索に出さないよう、HTMLと同じフォルダに <code>_headers</code> を置く。本番ドメインには効かないので外し忘れの心配なし。</p>
+    <div class="code"><button type="button">コピー</button><pre>https://:project.pages.dev/*
+  X-Robots-Tag: noindex</pre></div>
+
+    <h4>C. ドメインをCloudflareに登録（ネームサーバーを変える手前まで）</h4>
+    <ol class="do">
+      <li>お客様のアカウントで Account home → Add a domain（または Add a site）</li>
+      <li>ドメイン名を www なしで入れる → Quick scan for DNS records → Continue → プランは Free</li>
+      <li>取り込まれたDNSレコードを、1回目の前に記録したものと<strong>1行ずつ突き合わせる</strong>。足りないものは Add record で足す</li>
+    </ol>
+    <table class="tbl">
+      <thead><tr><th>確かめるもの</th><th>何のため</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td>MX（全部）</td><td>メールを受け取る</td><td>優先度（Priority）の数字も同じに</td></tr>
+        <tr><td>TXT：v=spf1 で始まるもの</td><td>迷惑メール扱いされないため</td><td>1つのドメインに1行だけ</td></tr>
+        <tr><td>TXT：_dmarc</td><td>同上</td><td>なければ無理に足さなくてよい</td></tr>
+        <tr><td>〇〇._domainkey（DKIM）</td><td>同上</td><td>Google は google._domainkey、Microsoft は selector1/selector2</td></tr>
+        <tr><td>CNAME：autodiscover</td><td>Outlook の自動設定</td><td>Microsoft 365 の場合</td></tr>
+        <tr><td>TXT：google-site-verification など</td><td>Google や Meta の持ち主確認</td><td>消すと確認し直しになる</td></tr>
+        <tr><td>A・CNAME（@ と www）</td><td>今のサイト</td><td>公開の瞬間まで残す</td></tr>
+      </tbody>
+    </table>
+    <ol class="do" style="counter-reset:s 3">
+      <li>メール関係の行（MX の行き先、mail.〇〇、autodiscover など）は Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
+      <li>表示された Cloudflare のネームサーバー2つ（例：<code>ada.ns.cloudflare.com</code>／<code>bob.ns.cloudflare.com</code>、名前は毎回違う）をメモする。<strong>ここで止めておく</strong></li>
+      <li>1回目の前に打った <code>dig … DS</code> で何か出ていたら DNSSEC がオン。2回目までにお客様と一緒にオフにしておく（オンのまま書き換えるとサイトもメールもつながらなくなる）</li>
+    </ol>
+
+    <h4>D. 2回目の前日チェック</h4>
+    <ul class="check">
+      <li><input type="checkbox" id="s2m5"><label for="s2m5">お客様の「これでOK」と着手金を受け取った</label></li>
+      <li><input type="checkbox" id="s2m6"><label for="s2m6">お客様がドメイン管理会社にログインできることを確認済み</label></li>
+      <li><input type="checkbox" id="s2m7"><label for="s2m7">pages.dev の最新版をスマホで確認した</label></li>
+      <li><input type="checkbox" id="s2m8"><label for="s2m8">DNSの突き合わせが済み、ネームサーバー2つをメモしてある</label></li>
+      <li><input type="checkbox" id="s2m9"><label for="s2m9">引き継ぎメモと請求書（残金）を作ってある</label></li>
+    </ul>
+    <div class="note warn"><b class="lbl">ここで1つでも×なら</b>2回目は「公開日」ではなく「仕上げの確認」に切り替え、3回目を公開日にします。前日までにお客様に一言伝えます。</div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="stage" id="s3">
+  <div class="stage-head reveal"><span class="stage-num">3</span><span class="stage-tag">STEP 03 · 2回目の面談 · 90〜120分</span><h2>2回目の面談＝公開日</h2></div>
+  <p class="lead2">最初にネームサーバーを書き換え、Cloudflare に切り替わるのを待つあいだに、最終確認と説明を済ませます。ふつうは数分〜1時間ほどで切り替わるので、多くの場合は面談中に公開まで終わります。</p>
+  <p class="progress" data-prog="s3"></p>
+
+  <ol class="agenda reveal">
+    <li><span class="am">0〜15分</span><span class="ab"><b>ネームサーバーを書き換える</b>お客様のスマホ・パソコンで、制作側と一緒に</span></li>
+    <li><span class="am">15〜60分</span><span class="ab"><b>待つあいだに</b>最終確認・更新のしかたの説明・引き継ぎメモ・請求書・権利の確認</span></li>
+    <li><span class="am">Active 後</span><span class="ab"><b>切り替え</b>制作側の作業10〜30分。お客様は休憩でOK</span></li>
+    <li><span class="am">最後の15分</span><span class="ab"><b>一緒にチェック</b>お客様のスマホで開く・メールを送り合う</span></li>
+  </ol>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3><span class="time">最初の15分</span></div>
+    <ol class="do">
+      <li>ドメイン管理会社にログインする</li>
+      <li>該当のドメインを開き、「ネームサーバー」（Nameservers、DNS servers と書かれていることも）を探す</li>
+      <li>「自分で指定する」（Custom、Use my own nameservers など）を選ぶ</li>
+      <li>今入っているネームサーバーをすべて消し、制作側が見せる2つを入れる（3つ目以降は入れない）</li>
+      <li>保存する。確認コードやメールが届いたら承認する</li>
+    </ol>
+    <p>画面の名前は会社ごとに違います。制作側が横で一緒に探します。</p>
+    <ul class="check">
+      <li><input type="checkbox" id="s3c1"><label for="s3c1">ネームサーバーを2つに書き換えて保存した</label></li>
+      <li><input type="checkbox" id="s3c2"><label for="s3c2">待ち時間に、サイトの更新のしかたと問い合わせの受け取り方を聞いた</label></li>
+      <li><input type="checkbox" id="s3c3"><label for="s3c3">公開後、自分のスマホで <code>example.com.au</code> を開いて新しいサイトが出た（古いままなら Wi-Fi を切って携帯回線で）</label></li>
+      <li><input type="checkbox" id="s3c4"><label for="s3c4">個人のアドレスとお店のアドレスの間で、メールを行きも帰りも送って届いた</label></li>
+      <li><input type="checkbox" id="s3c5"><label for="s3c5">ドメインの自動更新がオンになっていて、カードの期限が切れていない（管理画面を開いたついでに）</label></li>
+      <li><input type="checkbox" id="s3c6"><label for="s3c6">Cloudflare とドメイン管理会社のログイン情報を、お店の大事な書類と一緒に保管した</label></li>
+    </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <h4>待つあいだ</h4>
+    <ul class="check">
+      <li><input type="checkbox" id="s3m1"><label for="s3m1">Cloudflare の画面で Check nameservers now を押す。<code>dig example.com.au NS +short</code> に cloudflare が出るか、ときどき見る</label></li>
+      <li><input type="checkbox" id="s3m2"><label for="s3m2">pages.dev をお客様と一緒に最後まで見る</label></li>
+      <li><input type="checkbox" id="s3m3"><label for="s3m3">引き継ぎメモを渡す：ドメイン管理会社と更新日、Cloudflare のメールアドレス、DNSの一覧（何のための行か）、直したいときの連絡先</label></li>
+      <li><input type="checkbox" id="s3m4"><label for="s3m4">保守の有無を確かめ、権利（下の表）を口頭でも確認する</label></li>
+    </ul>
+    <h4>Active になったら切り替え</h4>
+    <ol class="do">
+      <li>Cloudflare の DNS → Records で、旧サイト向けの @ と www の A・CNAME を削除する（<strong>メールの行は絶対に消さない</strong>）。消した内容はメモ（戻すとき用）</li>
+      <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a custom domain → <code>example.com.au</code> → Activate domain</li>
       <li>同じように <code>www.example.com.au</code> も追加する</li>
-      <li>両方の Status が Active になるまで待つ（ふつう数分。https の鍵＝SSL証明書も自動で発行される）</li>
+      <li>両方の Status が Active になるまで待つ（ふつう数分。https の証明書も自動で発行される）</li>
+      <li>Rules → Redirect Rules → テンプレート「Redirect from WWW to root」（旧サイトが www ありなら逆向き）</li>
+      <li>SSL/TLS → Edge Certificates → Always Use HTTPS をオン</li>
     </ol>
-    <h4>仕上げ</h4>
-    <ol class="do" start="6" style="counter-reset:s 5">
-      <li>www ありを www なしにまとめる：ドメインの Rules → Redirect Rules → テンプレート「Redirect from WWW to root」を使う（301、クエリ文字列を残す）</li>
-      <li>SSL/TLS → Edge Certificates で Always Use HTTPS をオン</li>
-      <li>どちらを本物にするか（www あり／なし）は、旧サイトと同じにするのが安全。旧サイトが www ありなら、手順6は逆向きにする</li>
-    </ol>
-    <div class="note"><b class="lbl">うまくいかなかったときの戻し方</b>Custom domains から両方を外し、手順1でメモした旧サイトのレコードを戻す。数分で旧サイトに戻ります。</div>
+    <h4>その場でチェック</h4>
+    <ul class="check">
+      <li><input type="checkbox" id="s3m5"><label for="s3m5"><code>https://</code> の www あり・なしが両方開き、片方にまとまる。<code>http://</code> でも https に移る</label></li>
+      <li><input type="checkbox" id="s3m6"><label for="s3m6">旧URLが正しく転送される（<code>curl -sI https://example.com.au/about-us</code> で 301 と行き先）</label></li>
+      <li><input type="checkbox" id="s3m7"><label for="s3m7">本番に noindex が付いていない（<code>curl -sI https://example.com.au | grep -i robots</code> で何も出ない）</label></li>
+      <li><input type="checkbox" id="s3m8"><label for="s3m8">メールの行（MX・SPF・DKIM）が残っている（dig を打ち直して記録と比べる）</label></li>
+      <li><input type="checkbox" id="s3m9"><label for="s3m9">電話・地図・SNSのリンク、問い合わせフォームが動く</label></li>
+      <li><input type="checkbox" id="s3m10"><label for="s3m10">Google Search Console に登録（持ち主確認のTXTは Cloudflare のDNSに足す）し、sitemap.xml を送る</label></li>
+      <li><input type="checkbox" id="s3m11"><label for="s3m11">Googleビジネスプロフィール・Instagram のサイトURLが正しいか、お客様と一緒に見る</label></li>
+    </ul>
+    <div class="note"><b class="lbl">うまくいかなかったときの戻し方</b>Custom domains から両方を外し、消した旧サイトのレコードを戻す。数分で旧サイトに戻ります。メールの行は触っていないので、メールは止まりません。</div>
   </div>
 </section>
 
-<!-- 6 -->
-<section class="stage" id="s6">
-  <div class="stage-head reveal"><span class="stage-num">6</span><span class="stage-tag">STAGE 06 · 公開日 · 1時間</span><h2>公開日のチェックリスト</h2></div>
-  <p class="lead2">切り替えたら、その日のうちに全部確かめます。一つでも×があれば、その場で直すか旧サイトに戻します。</p>
-  <p class="progress" data-prog="s6"></p>
+<!-- 4 -->
+<section class="stage" id="s4">
+  <div class="stage-head reveal"><span class="stage-num">4</span><span class="stage-tag">STEP 04 · 予備</span><h2>2回目で終わらなかったとき</h2></div>
+  <p class="lead2">面談の時間内に Cloudflare が Active にならなくても、<strong>3回目の面談はいりません</strong>。お客様の作業（ネームサーバーの書き換え）は済んでいるので、残りは制作側がオンラインで仕上げます。会う必要があるのは、下の「3回目が必要なとき」だけです。</p>
+  <p class="progress" data-prog="s4"></p>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側：オンラインで仕上げる</h3><span class="time">当日夜〜48時間以内</span></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s4m1"><label for="s4m1">Active になったら、STEP 03 の「切り替え」と「その場でチェック」を一人でやる</label></li>
+      <li><input type="checkbox" id="s4m2"><label for="s4m2">お客様に「公開しました」と連絡し、スマホで開くこととメールの送り合いをお願いする</label></li>
+      <li><input type="checkbox" id="s4m3"><label for="s4m3">48時間たっても Active にならなければ、ネームサーバーの綴り・3つ目が残っていないか・DNSSEC を確かめる</label></li>
+    </ul>
+  </div>
 
   <div class="role client reveal">
-    <div class="role-h"><h3>お客様がやること</h3></div>
+    <div class="role-h"><h3>お客様がやること</h3><span class="time">5分</span></div>
     <ul class="check">
-      <li><input type="checkbox" id="s6c1"><label for="s6c1">自分のスマホで <code>example.com.au</code> を開き、新しいサイトが出るか（古いままなら、Wi-Fiを切って携帯回線で試す）</label></li>
-      <li><input type="checkbox" id="s6c2"><label for="s6c2">お店のアドレスにメールが届くか、お店のアドレスから送れるか</label></li>
-      <li><input type="checkbox" id="s6c3"><label for="s6c3">問い合わせフォームや予約ボタンを実際に使ってみる</label></li>
-      <li><input type="checkbox" id="s6c4"><label for="s6c4">Googleマップ（Googleビジネスプロフィール）、Instagram、Facebook のサイトURLが正しいか確かめる（ドメインが同じならそのままでOK）</label></li>
+      <li><input type="checkbox" id="s4c1"><label for="s4c1">「公開しました」の連絡が来たら、スマホでサイトを開く</label></li>
+      <li><input type="checkbox" id="s4c2"><label for="s4c2">個人のアドレスとお店のアドレスでメールを送り合い、届いたらLINEなどで一言返す</label></li>
     </ul>
   </div>
 
   <div class="role me reveal">
-    <div class="role-h"><h3>制作側がやること</h3></div>
-    <ul class="check">
-      <li><input type="checkbox" id="s6m1"><label for="s6m1"><code>https://example.com.au</code> と <code>https://www.example.com.au</code> の両方が開き、片方にまとまる</label></li>
-      <li><input type="checkbox" id="s6m2"><label for="s6m2"><code>http://</code>（sなし）で開いても https に移る。鍵マークに警告が出ない</label></li>
-      <li><input type="checkbox" id="s6m3"><label for="s6m3">段階1で作った旧URL一覧を全部開き、正しいページに転送される（<code>curl -sI https://example.com.au/about-us</code> で 301 と行き先を見る）</label></li>
-      <li><input type="checkbox" id="s6m4"><label for="s6m4">存在しないURLで 404 ページが出る</label></li>
-      <li><input type="checkbox" id="s6m5"><label for="s6m5">本番ドメインに noindex が付いていない（<code>curl -sI https://example.com.au | grep -i robots</code> で何も出ない、HTMLにもない）</label></li>
-      <li><input type="checkbox" id="s6m6"><label for="s6m6">iPhone・Android・パソコンで全ページを開き、崩れ・画像切れがない</label></li>
-      <li><input type="checkbox" id="s6m7"><label for="s6m7">電話番号を押すと電話がかかる、地図、SNSのリンク先が正しい</label></li>
-      <li><input type="checkbox" id="s6m8"><label for="s6m8">メールのレコード（MX・SPF・DKIM）が消えていない（段階1の dig をもう一度打って比べる）</label></li>
-      <li><input type="checkbox" id="s6m9"><label for="s6m9">Google Search Console にドメインを登録（持ち主確認のTXTは Cloudflare のDNSに足す）し、sitemap.xml を送る。旧サイトで登録済みなら、確認が切れていないか見る</label></li>
-      <li><input type="checkbox" id="s6m10"><label for="s6m10">GA4 などアクセス解析があれば、計測が入っているかリアルタイムで確かめる</label></li>
-      <li><input type="checkbox" id="s6m11"><label for="s6m11">お客様に「公開しました」と連絡し、上の「お客様がやること」をお願いする</label></li>
-    </ul>
+    <div class="role-h"><h3>3回目の面談が必要なとき</h3></div>
+    <table class="tbl">
+      <thead><tr><th>原因</th><th>3回目にやること</th></tr></thead>
+      <tbody>
+        <tr><td>ドメインのログインが2回目までに取れなかった</td><td>ログインが取れしだい日程を決め、STEP 03 をそのまま行う</td></tr>
+        <tr><td>修正が締め切りに間に合わなかった</td><td>2回目は確認の場にして、3回目を公開日にする</td></tr>
+        <tr><td>メールが古いサーバーに付いていて、解約すると止まる</td><td>先にメールの引っ越し先を決めて移し、そのあと公開</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
-<!-- 7 -->
-<section class="stage" id="s7">
-  <div class="stage-head reveal"><span class="stage-num">7</span><span class="stage-tag">STAGE 07 · 公開の1〜2週間後</span><h2>公開後（解約・更新・引き継ぎ）</h2></div>
+<!-- 5 -->
+<section class="stage" id="s5">
+  <div class="stage-head reveal"><span class="stage-num">5</span><span class="stage-tag">STEP 05 · 公開の1〜2週間後</span><h2>公開後（解約・請求・引き継ぎ）</h2></div>
   <p class="lead2">問題がないことを確かめてから旧サービスを解約します。解約の順番を間違えるとメールやドメインまで消えるので、解約の前に制作側に一言ください。</p>
-  <p class="progress" data-prog="s7"></p>
+  <p class="progress" data-prog="s5"></p>
 
   <div class="role client reveal">
     <div class="role-h"><h3>お客様がやること</h3></div>
     <ul class="check">
-      <li><input type="checkbox" id="s7c1"><label for="s7c1">旧サイトのサービス（Wix・Squarespace など）の<strong>サイトのプランだけ</strong>を解約する。そこでドメインを買った場合、ドメインは別の契約なので<strong>ドメインは解約しない</strong></label></li>
-      <li><input type="checkbox" id="s7c2"><label for="s7c2">メールが旧サーバーに付いている場合、そのサーバーを解約するとメールも止まる。先に制作側とメールの移し先を決める</label></li>
-      <li><input type="checkbox" id="s7c3"><label for="s7c3">ドメインの自動更新をオンにし、登録してあるカードの期限を確かめる（更新切れは、サイトとメールが一度に止まるいちばん多い原因）</label></li>
-      <li><input type="checkbox" id="s7c4"><label for="s7c4">更新のお知らせが届くメールアドレスが、今も使っているものか確かめる</label></li>
-      <li><input type="checkbox" id="s7c5"><label for="s7c5">Cloudflare とドメイン管理会社のログイン情報、2段階認証のバックアップコードを、お店の大事な書類と一緒に保管する</label></li>
+      <li><input type="checkbox" id="s5c1"><label for="s5c1">旧サイトのサービス（Wix・Squarespace など）の<strong>サイトのプランだけ</strong>を解約する。そこでドメインを買った場合、<strong>ドメインは解約しない</strong></label></li>
+      <li><input type="checkbox" id="s5c2"><label for="s5c2">メールが旧サーバーに付いている場合は、解約するとメールも止まる。先に制作側に相談する</label></li>
+      <li><input type="checkbox" id="s5c3"><label for="s5c3">残金を支払う（契約どおり）</label></li>
     </ul>
   </div>
 
   <div class="role me reveal">
     <div class="role-h"><h3>制作側がやること</h3></div>
     <ul class="check">
-      <li><input type="checkbox" id="s7m1"><label for="s7m1">Search Console で「ページが見つからない（404）」が出ていないか、1週間後と1か月後に確かめる。出たら <code>_redirects</code> に足す</label></li>
-      <li><input type="checkbox" id="s7m2"><label for="s7m2">引き継ぎメモを渡す：ドメイン管理会社、更新日、Cloudflare アカウントのメールアドレス、DNSの一覧（何のための行か）、サイトの直し方の連絡先</label></li>
-      <li><input type="checkbox" id="s7m3"><label for="s7m3">保守の契約があるかどうかで、Cloudflare の招待を残すか外すかを決める。保守なしなら、お客様に外してもらう</label></li>
-      <li><input type="checkbox" id="s7m4"><label for="s7m4">請求書の残金があれば公開後に送る（契約どおり）</label></li>
+      <li><input type="checkbox" id="s5m1"><label for="s5m1">Search Console で「ページが見つからない（404）」が出ていないか、1週間後と1か月後に確かめる。出たら <code>_redirects</code> に足す</label></li>
+      <li><input type="checkbox" id="s5m2"><label for="s5m2">残金の請求書を送る</label></li>
+      <li><input type="checkbox" id="s5m3"><label for="s5m3">保守なしなら、Cloudflare の招待をお客様に外してもらう</label></li>
     </ul>
-    <h4>権利の整理（契約書で決めたとおりにする）</h4>
+    <h4>権利の整理（1回目の面談で話し、契約書に書く）</h4>
     <table class="tbl">
       <thead><tr><th>もの</th><th>持ち主・名義</th></tr></thead>
       <tbody>
@@ -521,24 +577,23 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
         <tr><td>制作側が複数のサイトで使う部品・仕組み（投稿機能など）</td><td>制作側。お客様は使う権利を持つ</td></tr>
       </tbody>
     </table>
-    <p>契約書で決めていない場合は、公開の前に決めておきます。</p>
   </div>
 </section>
 
 <!-- FAQ -->
 <section class="stage faq" id="faq">
   <div class="stage-head reveal"><span class="stage-num">?</span><span class="stage-tag">TROUBLESHOOTING</span><h2>困ったとき・よくある質問</h2></div>
-  <details><summary>ドメイン管理会社にログインできない</summary><p>ログイン画面の「パスワードを忘れた」から再設定。メールも分からなければ、管理会社のサポートに本人確認を依頼します（.au は登録したABNや会社名で確認されることが多い）。</p></details>
-  <details><summary>ドメインが前の制作会社の名義になっている</summary><p>名義をお客様に移してもらうよう依頼します。数日〜数週間かかるので、契約直後に始めます。</p></details>
+  <details><summary>ドメイン管理会社にログインできない</summary><p>ログイン画面の「パスワードを忘れた」から再設定。メールも分からなければ、管理会社のサポートに本人確認を依頼します（.au は登録したABNや会社名で確認されることが多い）。2回目までに解決しなければ、公開は3回目にします。</p></details>
+  <details><summary>ドメインが前の制作会社の名義になっている</summary><p>名義をお客様に移してもらうよう依頼します。数日〜数週間かかるので、1回目の面談の直後に始めます。</p></details>
   <details><summary>ネームサーバーを変えたのに48時間たっても Active にならない</summary><p>入力ミス（綴り違い・3つ目が残っている）と、DNSSEC がオンのままでないかを確かめます。</p></details>
-  <details><summary>メールが届かなくなった</summary><p>MX が段階1の記録どおりか、メール用の行がオレンジの雲になっていないかを確かめます。</p></details>
+  <details><summary>メールが届かなくなった</summary><p>MX が記録どおりか、メール用の行がオレンジの雲になっていないかを確かめます。</p></details>
   <details><summary>送ったメールが相手の迷惑メールに入る</summary><p>SPF と DKIM の行が残っているか、SPF が2行になっていないかを確かめます。</p></details>
   <details><summary>新しいサイトが自分のスマホだけ出ない</summary><p>古い情報が残っているだけのことが多いです。携帯回線に切り替えるか、数時間待ちます。</p></details>
   <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains の Status が Active か確かめます。証明書の発行中なら数分〜数時間待ちます。</p></details>
   <details><summary>Cloudflare の画面がこの手順書と違う</summary><p>Cloudflare は画面の名前がよく変わります。この手順書は2026年10月時点です。上の検索バーで英語の名前（Custom domains など）を入れると早く見つかります。</p></details>
-  <details><summary>費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
+  <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
   <details><summary>ドメインごとCloudflareに移した方がいい？</summary><p>必要ありません。管理会社はそのままで、案内表だけ移すのがいちばん安全です（.com.au は移せる会社が限られるため）。</p></details>
-  <details><summary>新しいドメインを取る場合は？</summary><p>段階1でお客様名義で購入してもらいます。その場合は段階4の「突き合わせ」が不要で、ネームサーバーを変えるだけです。</p></details>
+  <details><summary>新しいドメインを取る場合は？</summary><p>1回目の面談のあとにお客様名義で購入してもらいます。DNSの突き合わせが不要になるので、2回目で公開しやすくなります。</p></details>
 </section>
 
 <footer>
@@ -551,7 +606,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
 
 <script>
 (function(){
-  var KEY='wlg-checks-v1', FKEY='wlg-filter';
+  var KEY='wlg-checks-v2', FKEY='wlg-filter';
   var store={};
   try{store=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
   var boxes=[].slice.call(document.querySelectorAll('ul.check input'));
@@ -559,7 +614,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
 
   function visible(el){return el.offsetParent!==null}
   function update(){
-    ['s1','s2','s3','s4','s5','s6','s7'].forEach(function(s){
+    ['s0','s1','s2','s3','s4','s5'].forEach(function(s){
       var all=[].slice.call(document.querySelectorAll('#'+s+' ul.check input')).filter(visible);
       var done=all.filter(function(b){return b.checked}).length;
       var p=document.querySelector('[data-prog="'+s+'"]');
