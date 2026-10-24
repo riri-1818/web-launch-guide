@@ -347,7 +347,7 @@ body[data-f="client"] .w-me{display:none}
       <li><input type="checkbox" id="s0m4"><label for="s0m4">メールにはこちらの名前（屋号）と連絡先、「今後のご案内が不要ならご返信ください」などの配信停止の案内を必ず入れる。停止の依頼が来たら5営業日以内に止める</label></li>
       <li><input type="checkbox" id="s0m3"><label for="s0m3">返信が来たら、面談の日時と場所（お店／カフェ／オンライン）を決める</label></li>
     </ul>
-    <div class="note warn"><b class="lbl">オーストラリアのスパム法（Spam Act 2003）</b>営業メールは、原則として相手の同意が必要で、送り主の名前と連絡先、配信停止の方法を入れることが義務です（停止は5営業日以内）。お店が公開しているアドレスでも、公開されているだけでは同意にはなりません。条件付きで認められる場合（その店の仕事に関係する内容など）があるので、細かい条件は ACMA（豪州の通信当局）の案内と法律の条文で確かめ、迷ったら専門家に聞いてください。</div>
+    <div class="note warn"><b class="lbl">オーストラリアのスパム法（Spam Act 2003）</b>営業メールは、原則として相手の同意が必要で、送り主の名前と連絡先、配信停止の方法を入れることが義務です（停止は5営業日以内）。お店が公開しているアドレスでも、公開されているだけでは同意にはなりません。例外（Schedule 2 の 4(2)）として認められるのは、特定の人や役職（オーナー、店長など）あてのアドレスが、本人の了解のうえで目立つ形で公開され、「営業メールお断り」の記載がなく、内容がその人の仕事に関係する場合です。info@ のような共用アドレスが当てはまるかははっきりしません。迷ったら専門家に聞いてください。</div>
   </div>
 
   <div class="role client reveal">
@@ -421,7 +421,7 @@ dig selector1._domainkey.example.com.au CNAME +short</pre></div>
       <li>お店の共有メールアドレスとパスワードを入れて登録（担当が変わっても困らないアドレスがおすすめ）</li>
       <li>届いた確認メールのボタンを押す</li>
       <li>右上のメニュー → My Profile → Authentication で、2段階認証をオンにする（Mobile App Authentication＝スマホの認証アプリ）。表示されるバックアップコードは保管しておく</li>
-      <li>Members（メンバー）のページ → Invite members で、制作側のメールアドレスを入れる。範囲はアカウント全体、役割（Role）は Administrator を選んで送る</li>
+      <li>Members（メンバー）のページ → Invite members で、制作側のメールアドレスを入れる。範囲（scope）はアカウント全体、役割（Role）は Administrator を選んで Create policy → 最後に Invite members で送る</li>
     </ol>
     <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。Administrator はサイトやドメインの設定はできますが、メンバーの追加や支払い情報は触れません（Cloudflare 公式の権限の説明）。</div>
   </div>
@@ -501,7 +501,7 @@ https://:version.:project.pages.dev/*
     <ol class="do" style="counter-reset:s 3">
       <li>MX と TXT は自動でグレーの雲（DNS only）になる。気をつけるのは、メール用の A・CNAME（mail.〇〇、autodiscover など）。これらの Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
       <li>表示された Cloudflare のネームサーバー2つ（例：<code>ada.ns.cloudflare.com</code>／<code>bob.ns.cloudflare.com</code>、名前は毎回違う）をメモする。<strong>ここで止めておく</strong></li>
-      <li>1回目の前に打った <code>dig … DS</code> で何か出ていたら DNSSEC がオン。<strong>2回目の2日前までに</strong>、お客様と一緒に管理会社でオフにしておく（オンのまま書き換えるとサイトもメールもつながらなくなる。オフにした情報が消えるまで最大24時間かかる）。公開後に Cloudflare 側でオンに戻す</li>
+      <li>1回目の前に打った <code>dig … DS</code> で何か出ていたら DNSSEC がオン。<strong>2回目の3日前までに</strong>、お客様と一緒に管理会社でオフにしておく（オンのまま書き換えるとサイトもメールもつながらなくなる。オフにした情報が世界中から消えるまで、多くのドメインで24〜48時間かかる：Cloudflare 公式）。公開後に Cloudflare 側でオンに戻す</li>
     </ol>
 
     <h4>D. 2回目の前日チェック</h4>
@@ -510,6 +510,7 @@ https://:version.:project.pages.dev/*
       <li><input type="checkbox" id="s2m6"><label for="s2m6">お客様がドメイン管理会社にログインできることを確認済み</label></li>
       <li><input type="checkbox" id="s2m7"><label for="s2m7">pages.dev の最新版をスマホで確認した</label></li>
       <li><input type="checkbox" id="s2m8"><label for="s2m8">DNSの突き合わせが済み、ネームサーバー2つをメモしてある</label></li>
+      <li><input type="checkbox" id="s2m10"><label for="s2m10">DNSSEC がオンだった場合：<code>dig example.com.au DS +short</code> で何も出なくなっている</label></li>
       <li><input type="checkbox" id="s2m9"><label for="s2m9">引き継ぎメモと請求書（残金）を作ってある</label></li>
     </ul>
     <div class="note warn"><b class="lbl">ここで1つでも×なら</b>2回目は「公開日」ではなく「仕上げの確認」に切り替え、3回目を公開日にします。前日までにお客様に一言伝えます。</div>
@@ -672,13 +673,13 @@ https://:version.:project.pages.dev/*
 </section>
 
 <section class="stage sources" id="sources">
-  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24・25 確認（3回）</span><h2>出典</h2></div>
-  <p class="lead2">このページの内容は、2026年10月24日・25日に3回、下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
+  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24・25 確認（4回）</span><h2>出典</h2></div>
+  <p class="lead2">このページの内容は、2026年10月24日・25日に4回、下の公式ページと突き合わせました。4回目は各ページの本文をそのまま取得し、手順書の記載と一語ずつ照らしています。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
   <ul class="src">
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/" target="_blank" rel="noopener">Cloudflare：ドメインの追加（Full setup）</a>：Domains → Onboard a domain、DNSSEC は先にオフ、古いネームサーバーは消す、反映は最大24時間</li>
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/troubleshooting/pending-nameservers/" target="_blank" rel="noopener">Cloudflare：ネームサーバーが反映されないとき</a>：Overview ページから再チェックを依頼、よくある原因</li>
     <li><a href="https://developers.cloudflare.com/dns/proxy-status/" target="_blank" rel="noopener">Cloudflare：Proxy status</a>：MX・TXT は常に DNS only、メール用はグレーの雲</li>
-    <li><a href="https://developers.cloudflare.com/dns/dnssec/" target="_blank" rel="noopener">Cloudflare：DNSSEC</a>：DNS Settings → Enable DNSSEC、DS レコードを管理会社に登録</li>
+    <li><a href="https://developers.cloudflare.com/dns/dnssec/" target="_blank" rel="noopener">Cloudflare：DNSSEC</a>：DNS Settings → Enable DNSSEC、DS レコードを管理会社に登録。古い DS の情報が消えるまで多くは24〜48時間</li>
     <li><a href="https://developers.cloudflare.com/pages/get-started/git-integration/" target="_blank" rel="noopener">Cloudflare Pages：GitHub 連携</a>：Create application → Pages → Connect to Git、設定項目、Save and Deploy</li>
     <li><a href="https://developers.cloudflare.com/pages/get-started/direct-upload/" target="_blank" rel="noopener">Cloudflare Pages：直接アップロード</a>：後から GitHub 連携に切り替えられない、名前が使われていると末尾にランダムな文字が付く</li>
     <li><a href="https://developers.cloudflare.com/workers/wrangler/commands/pages/" target="_blank" rel="noopener">Wrangler：pages deploy</a>：--project-name の指定</li>
@@ -707,6 +708,9 @@ https://:version.:project.pages.dev/*
     <li><a href="https://developers.cloudflare.com/pages/configuration/debugging-pages/" target="_blank" rel="noopener">Cloudflare Pages：うまくいかないとき</a>：Verifying のまま進まない原因（CAA、転送ルール）、15分で問い合わせ</li>
     <li><a href="https://learn.microsoft.com/en-us/purview/how-smtp-dane-works" target="_blank" rel="noopener">Microsoft：SMTP DANE</a>：新しい MX の形式（…mx.microsoft）と従来の …mail.protection.outlook.com</li>
     <li><a href="https://www.acma.gov.au/sites/default/files/2022-03/Sportsbet%20Pty%20Ltd%20-%20Spam%20Act%20investigation%20-%20Infringement%20Notice%2023122021_Redacted.pdf" target="_blank" rel="noopener">ACMA：Spam Act の違反通知（例）</a>：公開アドレスだけでは同意にならない（Schedule 2 4(1)）、例外は 4(2)、メール内に配信停止の宛先を書く義務（18条）</li>
+    <li><a href="https://developers.cloudflare.com/fundamentals/manage-domains/add-site/" target="_blank" rel="noopener">Cloudflare：Onboard a domain</a>：ドメイン追加の入口の名前</li>
+    <li><a href="https://support.wix.com/en/article/canceling-a-wix-premium-plan" target="_blank" rel="noopener">Wix：サイトプランの解約</a>：プランを解約してもドメイン・メール・アプリは解約されない</li>
+    <li><a href="https://www.dwfoxtucker.com.au/2023/12/when-can-you-send-unsolicited-electronic-messages" target="_blank" rel="noopener">DW Fox Tucker（豪州の法律事務所）：Spam Act の解説</a>：Schedule 2 の 4(2) の条文と条件（公式の法令サイトは本文を取得できなかったため、条文を引用している解説で確認）</li>
   </ul>
   <p class="src-note">公式ページに書かれていないため、画面で確かめてほしいもの：Redirect Rule のテンプレート名、ネームサーバー再チェックのボタン名。</p>
 </section>
