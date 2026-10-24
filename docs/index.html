@@ -370,7 +370,7 @@ body[data-f="client"] .w-me{display:none}
     <p>ドメインとDNSの情報は誰でも調べられるので、会う前に済ませておきます。</p>
     <ul class="check">
       <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auDA の公式 WHOIS <code>whois.auda.org.au</code> でも可）。.au なら Registrar Name の欄を見る</label></li>
-      <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX が smtp.google.com や aspmx…google.com なら Google Workspace、…mail.protection.outlook.com なら Microsoft 365）</label></li>
+      <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX が smtp.google.com や aspmx…google.com なら Google Workspace、…mail.protection.outlook.com や、新しい形式の …mx.microsoft なら Microsoft 365）</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>dig example.com.au NS +short
 dig example.com.au A +short
@@ -495,6 +495,7 @@ https://:version.:project.pages.dev/*
         <tr><td>CNAME：autodiscover</td><td>Outlook の自動設定</td><td>Microsoft 365 の場合</td></tr>
         <tr><td>TXT：google-site-verification など</td><td>Google や Meta の持ち主確認</td><td>消すと確認し直しになる</td></tr>
         <tr><td>A・CNAME（@ と www）</td><td>今のサイト</td><td>公開の瞬間まで残す</td></tr>
+        <tr><td>CAA（あれば）</td><td>https の証明書をどこが発行してよいかの指定</td><td>前の会社だけに絞られていると、Cloudflare の証明書が出ない。あれば Cloudflare が使う発行元も許可する</td></tr>
       </tbody>
     </table>
     <ol class="do" style="counter-reset:s 3">
@@ -564,7 +565,7 @@ https://:version.:project.pages.dev/*
       <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a domain → <code>example.com.au</code> を入れて Continue → 表示される DNS の内容を確かめて進む</li>
       <li>同じように <code>www.example.com.au</code> も追加する</li>
       <li>両方が有効になるまで待つ（https の証明書も自動で発行される。少し時間がかかることがある）</li>
-      <li>www あり・なしを1つにまとめる：Rules → Overview → Create rule → Redirect Rule。テンプレートから選ぶか、手で「リクエストURL <code>https://www.*</code> → 転送先 <code>https://${1}</code>、301、Preserve query string をオン」（Cloudflare 公式の例。旧サイトが www ありなら逆向き）</li>
+      <li><strong>両方が有効になってから</strong>、www あり・なしを1つにまとめる（先に作ると証明書の確認を邪魔することがある）：Rules → Overview → Create rule → Redirect Rule。テンプレートから選ぶか、手で「リクエストURL <code>https://www.*</code> → 転送先 <code>https://${1}</code>、301、Preserve query string をオン」（Cloudflare 公式の例。旧サイトが www ありなら逆向き）</li>
       <li>SSL/TLS → Edge Certificates → Always Use HTTPS をオン</li>
     </ol>
     <h4>その場でチェック</h4>
@@ -662,7 +663,7 @@ https://:version.:project.pages.dev/*
   <details><summary>メールが届かなくなった</summary><p>MX が記録どおりか、メール用の行がオレンジの雲になっていないかを確かめます。</p></details>
   <details><summary>送ったメールが相手の迷惑メールに入る</summary><p>SPF と DKIM の行が残っているか、SPF が2行になっていないかを確かめます。</p></details>
   <details><summary>新しいサイトが自分のスマホだけ出ない</summary><p>古い情報が残っているだけのことが多いです。携帯回線に切り替えるか、数時間待ちます。</p></details>
-  <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains の Status が Active か確かめます。証明書の発行中なら数分〜数時間待ちます。</p></details>
+  <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains で、そのドメインが Verifying（確認中）のままになっていないか見ます。進まないときは、CAA レコードが Cloudflare の発行元を許可しているか、転送ルールや Worker が確認を邪魔していないかを確かめます。15分たっても Verifying のままなら、Cloudflare 公式はサポートへの問い合わせを勧めています。</p></details>
   <details><summary>Cloudflare の画面がこの手順書と違う</summary><p>Cloudflare は画面の名前がよく変わります。この手順書は2026年10月時点です。上の検索バーで英語の名前（Custom domains など）を入れると早く見つかります。</p></details>
   <details><summary>Wix や Squarespace でサイトのプランを解約すると、ドメインも消える？</summary><p>消えません。どちらもサイトのプランとドメインは別の契約で、プランを解約してもドメインは解約されません（Wix・Squarespace 公式）。ドメインの自動更新はオンのままにしておきます。</p></details>
   <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます（Cloudflare 公式：静的なページへのアクセスは無料・無制限、無料プランのビルドは月500回まで）。かかるのは、今までどおりのドメイン代（管理会社へ。.au は1〜5年ごとの更新）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
@@ -671,15 +672,15 @@ https://:version.:project.pages.dev/*
 </section>
 
 <section class="stage sources" id="sources">
-  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24・25 確認</span><h2>出典</h2></div>
-  <p class="lead2">このページの内容は、2026年10月24日・25日の2回、下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
+  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24・25 確認（3回）</span><h2>出典</h2></div>
+  <p class="lead2">このページの内容は、2026年10月24日・25日に3回、下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
   <ul class="src">
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/" target="_blank" rel="noopener">Cloudflare：ドメインの追加（Full setup）</a>：Domains → Onboard a domain、DNSSEC は先にオフ、古いネームサーバーは消す、反映は最大24時間</li>
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/troubleshooting/pending-nameservers/" target="_blank" rel="noopener">Cloudflare：ネームサーバーが反映されないとき</a>：Overview ページから再チェックを依頼、よくある原因</li>
     <li><a href="https://developers.cloudflare.com/dns/proxy-status/" target="_blank" rel="noopener">Cloudflare：Proxy status</a>：MX・TXT は常に DNS only、メール用はグレーの雲</li>
     <li><a href="https://developers.cloudflare.com/dns/dnssec/" target="_blank" rel="noopener">Cloudflare：DNSSEC</a>：DNS Settings → Enable DNSSEC、DS レコードを管理会社に登録</li>
     <li><a href="https://developers.cloudflare.com/pages/get-started/git-integration/" target="_blank" rel="noopener">Cloudflare Pages：GitHub 連携</a>：Create application → Pages → Connect to Git、設定項目、Save and Deploy</li>
-    <li><a href="https://developers.cloudflare.com/pages/get-started/direct-upload/" target="_blank" rel="noopener">Cloudflare Pages：直接アップロード</a>：後から GitHub 連携に切り替えられない</li>
+    <li><a href="https://developers.cloudflare.com/pages/get-started/direct-upload/" target="_blank" rel="noopener">Cloudflare Pages：直接アップロード</a>：後から GitHub 連携に切り替えられない、名前が使われていると末尾にランダムな文字が付く</li>
     <li><a href="https://developers.cloudflare.com/workers/wrangler/commands/pages/" target="_blank" rel="noopener">Wrangler：pages deploy</a>：--project-name の指定</li>
     <li><a href="https://developers.cloudflare.com/pages/configuration/headers/" target="_blank" rel="noopener">Cloudflare Pages：_headers</a>：pages.dev を検索に出さない書き方</li>
     <li><a href="https://developers.cloudflare.com/pages/configuration/redirects/" target="_blank" rel="noopener">Cloudflare Pages：_redirects</a>：書き方、番号を書かないと 302、上限 2,100 件</li>
@@ -703,6 +704,9 @@ https://:version.:project.pages.dev/*
     <li><a href="https://docs.github.com/en/apps/using-github-apps/installing-a-github-app-from-a-third-party" target="_blank" rel="noopener">GitHub：アプリの許可</a>：Only select repositories</li>
     <li><a href="https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace" target="_blank" rel="noopener">Google Workspace：MX レコード</a>：smtp.google.com（以前からの aspmx も有効）</li>
     <li><a href="https://support.squarespace.com/hc/en-us/articles/360027504092-Manage-your-Squarespace-billing" target="_blank" rel="noopener">Squarespace：請求の管理</a>：サイトとドメインは別々に請求</li>
+    <li><a href="https://developers.cloudflare.com/pages/configuration/debugging-pages/" target="_blank" rel="noopener">Cloudflare Pages：うまくいかないとき</a>：Verifying のまま進まない原因（CAA、転送ルール）、15分で問い合わせ</li>
+    <li><a href="https://learn.microsoft.com/en-us/purview/how-smtp-dane-works" target="_blank" rel="noopener">Microsoft：SMTP DANE</a>：新しい MX の形式（…mx.microsoft）と従来の …mail.protection.outlook.com</li>
+    <li><a href="https://www.acma.gov.au/sites/default/files/2022-03/Sportsbet%20Pty%20Ltd%20-%20Spam%20Act%20investigation%20-%20Infringement%20Notice%2023122021_Redacted.pdf" target="_blank" rel="noopener">ACMA：Spam Act の違反通知（例）</a>：公開アドレスだけでは同意にならない（Schedule 2 4(1)）、例外は 4(2)、メール内に配信停止の宛先を書く義務（18条）</li>
   </ul>
   <p class="src-note">公式ページに書かれていないため、画面で確かめてほしいもの：Redirect Rule のテンプレート名、ネームサーバー再チェックのボタン名。</p>
 </section>
