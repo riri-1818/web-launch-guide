@@ -256,6 +256,11 @@ body[data-f="client"] .w-me{display:none}
   .w-tools{top:62px}
   .pop{position:fixed;left:16px!important;right:16px;bottom:16px;top:auto!important;width:auto}
 }
+
+.src{margin:0;padding-left:1.2em;font-size:14.5px;line-height:1.8}
+.src li{margin:6px 0;color:var(--ink-2)}
+.src a{color:var(--ink);text-decoration-color:var(--accent);text-underline-offset:3px}
+.src-note{font-size:14px;color:var(--ink-3);margin-top:16px}
 </style>
 </head>
 <body data-f="all">
@@ -362,7 +367,7 @@ body[data-f="client"] .w-me{display:none}
     <div class="role-h"><h3>制作側：面談の前にやっておくこと</h3><span class="time">前日まで・30分</span></div>
     <p>ドメインとDNSの情報は誰でも調べられるので、会う前に済ませておきます。</p>
     <ul class="check">
-      <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auda.org.au の WHOIS でも可）。Registrar の欄を見る</label></li>
+      <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auDA の公式 WHOIS <code>whois.auda.org.au</code> でも可）。Registrar の欄を見る</label></li>
       <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX に google なら Google Workspace、outlook なら Microsoft 365）</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>dig example.com.au NS +short
@@ -413,10 +418,10 @@ dig selector1._domainkey.example.com.au CNAME +short</pre></div>
       <li><code>dash.cloudflare.com/sign-up</code> を開く</li>
       <li>お店の共有メールアドレスとパスワードを入れて登録（担当が変わっても困らないアドレスがおすすめ）</li>
       <li>届いた確認メールのボタンを押す</li>
-      <li>右上の人のマーク → Profile → Authentication で、2段階認証（スマホの認証アプリ）をオンにする</li>
-      <li>左のメニューの Manage Account → Members → Invite で、制作側のメールアドレスを招待する（権限は Administrator）</li>
+      <li>右上のメニュー → My Profile → Authentication で、2段階認証をオンにする（Mobile App Authentication＝スマホの認証アプリ）。表示されるバックアップコードは保管しておく</li>
+      <li>Members（メンバー）のページ → Invite members で、制作側のメールアドレスを入れる。範囲はアカウント全体、役割（Role）は Administrator を選んで送る</li>
     </ol>
-    <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。</div>
+    <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。Administrator はサイトやドメインの設定はできますが、メンバーの追加や支払い情報は触れません（Cloudflare 公式の権限の説明）。</div>
   </div>
 </section>
 
@@ -457,22 +462,25 @@ dig selector1._domainkey.example.com.au CNAME +short</pre></div>
     <h4>B. お客様のCloudflareにサイトを置く</h4>
     <ol class="do">
       <li>dash.cloudflare.com で、左上のアカウント名から<strong>お客様のアカウント</strong>に切り替える（自分のアカウントに作らない）</li>
-      <li>Workers &amp; Pages（Compute の中にあることも）→ Create → Pages タブ → Connect to Git</li>
-      <li>GitHub のこのサイトのリポジトリだけを許可する（Only select repositories）</li>
+      <li>Workers &amp; Pages → Create application → Pages → Connect to Git</li>
+      <li>GitHub の画面で、このサイトのリポジトリだけを許可する（Only select repositories）</li>
       <li>設定：Project name＝お店の名前を英小文字で（例：shop-name）／Production branch＝main／Framework preset＝None／Build command＝空欄／Build output directory＝HTMLのフォルダ</li>
       <li>Save and Deploy → <code>https://shop-name.pages.dev</code> が開ける</li>
     </ol>
     <p>GitHub をお客様のアカウントとつなぎたくない場合は、手元から直接上げる（後からGitHub連携には切り替えられない）。</p>
     <div class="code"><button type="button">コピー</button><pre>npx wrangler login
 npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
-    <p>確認用URLを検索に出さないよう、HTMLと同じフォルダに <code>_headers</code> を置く。本番ドメインには効かないので外し忘れの心配なし。</p>
+    <p>確認用URLを検索に出さないよう、HTMLと同じフォルダに <code>_headers</code> を置く。2つ目は修正途中の版（プレビュー）用。本番ドメインには効かないので外し忘れの心配なし。</p>
     <div class="code"><button type="button">コピー</button><pre>https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
   X-Robots-Tag: noindex</pre></div>
 
     <h4>C. ドメインをCloudflareに登録（ネームサーバーを変える手前まで）</h4>
     <ol class="do">
-      <li>お客様のアカウントで Account home → Add a domain（または Add a site）</li>
-      <li>ドメイン名を www なしで入れる → Quick scan for DNS records → Continue → プランは Free</li>
+      <li>お客様のアカウントで Domains → Onboard a domain</li>
+      <li>ドメイン名を www なしで入れる → 今のレコードを自動で読み込む（DNS records quick scan）を選ぶ → Continue → プランは Free</li>
       <li>取り込まれたDNSレコードを、1回目の前に記録したものと<strong>1行ずつ突き合わせる</strong>。足りないものは Add record で足す</li>
     </ol>
     <table class="tbl">
@@ -488,9 +496,9 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
       </tbody>
     </table>
     <ol class="do" style="counter-reset:s 3">
-      <li>メール関係の行（MX の行き先、mail.〇〇、autodiscover など）は Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
+      <li>MX と TXT は自動でグレーの雲（DNS only）になる。気をつけるのは、メール用の A・CNAME（mail.〇〇、autodiscover など）。これらの Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
       <li>表示された Cloudflare のネームサーバー2つ（例：<code>ada.ns.cloudflare.com</code>／<code>bob.ns.cloudflare.com</code>、名前は毎回違う）をメモする。<strong>ここで止めておく</strong></li>
-      <li>1回目の前に打った <code>dig … DS</code> で何か出ていたら DNSSEC がオン。2回目までにお客様と一緒にオフにしておく（オンのまま書き換えるとサイトもメールもつながらなくなる）</li>
+      <li>1回目の前に打った <code>dig … DS</code> で何か出ていたら DNSSEC がオン。<strong>2回目の2日前までに</strong>、お客様と一緒に管理会社でオフにしておく（オンのまま書き換えるとサイトもメールもつながらなくなる。オフにした情報が消えるまで最大24時間かかる）。公開後に Cloudflare 側でオンに戻す</li>
     </ol>
 
     <h4>D. 2回目の前日チェック</h4>
@@ -508,7 +516,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
 <!-- 3 -->
 <section class="stage" id="s3">
   <div class="stage-head reveal"><span class="stage-num">3</span><span class="stage-tag">STEP 03 · 2回目の面談 · 90〜120分</span><h2>2回目の面談＝公開日</h2></div>
-  <p class="lead2">最初にネームサーバーを書き換え、Cloudflare に切り替わるのを待つあいだに、最終確認と説明を済ませます。ふつうは数分〜1時間ほどで切り替わるので、多くの場合は面談中に公開まで終わります。</p>
+  <p class="lead2">最初にネームサーバーを書き換え、Cloudflare に切り替わるのを待つあいだに、最終確認と説明を済ませます。早ければ数分〜数時間で切り替わり、面談中に公開まで終わります。Cloudflare の案内では最大24時間、管理会社によっては48時間とされているので、面談中に終わらなくても慌てなくて大丈夫です（STEP 04）。</p>
   <p class="progress" data-prog="s3"></p>
 
   <ol class="agenda reveal">
@@ -528,6 +536,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
       <li>保存する。確認コードやメールが届いたら承認する</li>
     </ol>
     <p>画面の名前は会社ごとに違います。制作側が横で一緒に探します。</p>
+    <div class="note"><b class="lbl">Wix でドメインを買った場合</b>ネームサーバーを変える前に、Wix でドメインをサイトから外す（Unassign）必要があります。外した時点で旧サイトは出なくなるので、2回目の面談の最初にやります。場所：Domains → ドメイン横の Domain Actions → Manage DNS records → Nameservers → Use custom nameservers（Wix 公式の手順）。</div>
     <ul class="check">
       <li><input type="checkbox" id="s3c1"><label for="s3c1">ネームサーバーを2つに書き換えて保存した</label></li>
       <li><input type="checkbox" id="s3c2"><label for="s3c2">待ち時間に、サイトの更新のしかたと問い合わせの受け取り方を聞いた</label></li>
@@ -542,7 +551,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
     <div class="role-h"><h3>制作側がやること</h3></div>
     <h4>待つあいだ</h4>
     <ul class="check">
-      <li><input type="checkbox" id="s3m1"><label for="s3m1">Cloudflare の画面で Check nameservers now を押す。<code>dig example.com.au NS +short</code> に cloudflare が出るか、ときどき見る</label></li>
+      <li><input type="checkbox" id="s3m1"><label for="s3m1">Cloudflare のドメインの Overview ページから、ネームサーバーの再チェックを依頼する（ボタン名は画面で確認）。<code>dig example.com.au NS +short</code> に cloudflare が出るか、ときどき見る</label></li>
       <li><input type="checkbox" id="s3m2"><label for="s3m2">pages.dev をお客様と一緒に最後まで見る</label></li>
       <li><input type="checkbox" id="s3m3"><label for="s3m3">引き継ぎメモを渡す：ドメイン管理会社と更新日、Cloudflare のメールアドレス、DNSの一覧（何のための行か）、直したいときの連絡先</label></li>
       <li><input type="checkbox" id="s3m4"><label for="s3m4">保守の有無を確かめ、権利（下の表）を口頭でも確認する</label></li>
@@ -550,10 +559,10 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
     <h4>Active になったら切り替え</h4>
     <ol class="do">
       <li>Cloudflare の DNS → Records で、旧サイト向けの @ と www の A・CNAME を削除する（<strong>メールの行は絶対に消さない</strong>）。消した内容はメモ（戻すとき用）</li>
-      <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a custom domain → <code>example.com.au</code> → Activate domain</li>
+      <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a domain → <code>example.com.au</code> を入れて Continue → 表示される DNS の内容を確かめて進む</li>
       <li>同じように <code>www.example.com.au</code> も追加する</li>
-      <li>両方の Status が Active になるまで待つ（ふつう数分。https の証明書も自動で発行される）</li>
-      <li>Rules → Redirect Rules → テンプレート「Redirect from WWW to root」（旧サイトが www ありなら逆向き）</li>
+      <li>両方が有効になるまで待つ（https の証明書も自動で発行される。少し時間がかかることがある）</li>
+      <li>www あり・なしを1つにまとめる：Rules → Overview → Create rule → Redirect Rule。テンプレートから選ぶか、手で「リクエストURL <code>https://www.*</code> → 転送先 <code>https://${1}</code>、301、Preserve query string をオン」（Cloudflare 公式の例。旧サイトが www ありなら逆向き）</li>
       <li>SSL/TLS → Edge Certificates → Always Use HTTPS をオン</li>
     </ol>
     <h4>その場でチェック</h4>
@@ -577,11 +586,11 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
   <p class="progress" data-prog="s4"></p>
 
   <div class="role me reveal">
-    <div class="role-h"><h3>制作側：オンラインで仕上げる</h3><span class="time">当日夜〜48時間以内</span></div>
+    <div class="role-h"><h3>制作側：オンラインで仕上げる</h3><span class="time">当日夜〜長くて48時間</span></div>
     <ul class="check">
       <li><input type="checkbox" id="s4m1"><label for="s4m1">Active になったら、STEP 03 の「切り替え」と「その場でチェック」を一人でやる</label></li>
       <li><input type="checkbox" id="s4m2"><label for="s4m2">お客様に「公開しました」と連絡し、スマホで開くこととメールの送り合いをお願いする</label></li>
-      <li><input type="checkbox" id="s4m3"><label for="s4m3">48時間たっても Active にならなければ、ネームサーバーの綴り・3つ目が残っていないか・DNSSEC を確かめる</label></li>
+      <li><input type="checkbox" id="s4m3"><label for="s4m3">24時間たっても Active にならなければ（管理会社が48時間と案内している場合はそこまで待つ）、ネームサーバーの綴り・3つ目が残っていないか・DNSSEC を確かめる</label></li>
     </ul>
   </div>
 
@@ -645,17 +654,48 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
 <!-- FAQ -->
 <section class="stage faq" id="faq">
   <div class="stage-head reveal"><span class="stage-num">?</span><span class="stage-tag">TROUBLESHOOTING</span><h2>困ったとき・よくある質問</h2></div>
-  <details><summary>ドメイン管理会社にログインできない</summary><p>ログイン画面の「パスワードを忘れた」から再設定。メールも分からなければ、管理会社のサポートに本人確認を依頼します（.au は登録したABNや会社名で確認されることが多い）。2回目までに解決しなければ、公開は3回目にします。</p></details>
+  <details><summary>ドメイン管理会社にログインできない</summary><p>ログイン画面の「パスワードを忘れた」から再設定。メールも分からなければ、管理会社のサポートに本人確認を依頼します（登録したときの ABN・会社名・メールアドレスなどを用意しておくと話が早いです）。2回目までに解決しなければ、公開は3回目にします。</p></details>
   <details><summary>ドメインが前の制作会社の名義になっている</summary><p>名義をお客様に移してもらうよう依頼します。数日〜数週間かかるので、1回目の面談の直後に始めます。</p></details>
-  <details><summary>ネームサーバーを変えたのに48時間たっても Active にならない</summary><p>入力ミス（綴り違い・3つ目が残っている）と、DNSSEC がオンのままでないかを確かめます。</p></details>
+  <details><summary>ネームサーバーを変えたのに24時間たっても Active にならない</summary><p>入力ミス（綴り違い・Cloudflare 以外のネームサーバーが残っている）、DNSSEC の情報が管理会社に残っていないか、保存し忘れや別のドメインを書き換えていないかを確かめます。管理会社によっては、確認メールの承認が要ることもあります。</p></details>
   <details><summary>メールが届かなくなった</summary><p>MX が記録どおりか、メール用の行がオレンジの雲になっていないかを確かめます。</p></details>
   <details><summary>送ったメールが相手の迷惑メールに入る</summary><p>SPF と DKIM の行が残っているか、SPF が2行になっていないかを確かめます。</p></details>
   <details><summary>新しいサイトが自分のスマホだけ出ない</summary><p>古い情報が残っているだけのことが多いです。携帯回線に切り替えるか、数時間待ちます。</p></details>
   <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains の Status が Active か確かめます。証明書の発行中なら数分〜数時間待ちます。</p></details>
   <details><summary>Cloudflare の画面がこの手順書と違う</summary><p>Cloudflare は画面の名前がよく変わります。この手順書は2026年10月時点です。上の検索バーで英語の名前（Custom domains など）を入れると早く見つかります。</p></details>
-  <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
-  <details><summary>ドメインごとCloudflareに移した方がいい？</summary><p>必要ありません。管理会社はそのままで、案内表だけ移すのがいちばん安全です（.com.au は移せる会社が限られるため）。</p></details>
+  <details><summary>Wix でサイトのプランを解約すると、ドメインも消える？</summary><p>消えません。Wix ではサイトのプランとドメインは別の契約で、プランを解約してもドメインは解約されません（Wix 公式）。ドメインの自動更新はオンのままにしておきます。</p></details>
+  <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます（Cloudflare 公式：静的なページへのアクセスは無料・無制限、無料プランのビルドは月500回まで）。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
+  <details><summary>ドメインごとCloudflareに移した方がいい？</summary><p>必要ありません。そもそも Cloudflare のドメイン管理（Cloudflare Registrar）は .com.au を扱っていません（2026年10月時点の公式一覧）。管理会社はそのままで、案内表だけ移します。</p></details>
   <details><summary>新しいドメインを取る場合は？</summary><p>1回目の面談のあとにお客様名義で購入してもらいます。DNSの突き合わせが不要になるので、2回目で公開しやすくなります。</p></details>
+</section>
+
+<section class="stage sources" id="sources">
+  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24 確認</span><h2>出典</h2></div>
+  <p class="lead2">このページの内容は、2026年10月24日に下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
+  <ul class="src">
+    <li><a href="https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/" target="_blank" rel="noopener">Cloudflare：ドメインの追加（Full setup）</a>：Domains → Onboard a domain、DNSSEC は先にオフ、古いネームサーバーは消す、反映は最大24時間</li>
+    <li><a href="https://developers.cloudflare.com/dns/zone-setups/troubleshooting/pending-nameservers/" target="_blank" rel="noopener">Cloudflare：ネームサーバーが反映されないとき</a>：Overview ページから再チェックを依頼、よくある原因</li>
+    <li><a href="https://developers.cloudflare.com/dns/proxy-status/" target="_blank" rel="noopener">Cloudflare：Proxy status</a>：MX・TXT は常に DNS only、メール用はグレーの雲</li>
+    <li><a href="https://developers.cloudflare.com/dns/dnssec/" target="_blank" rel="noopener">Cloudflare：DNSSEC</a>：DNS Settings → Enable DNSSEC、DS レコードを管理会社に登録</li>
+    <li><a href="https://developers.cloudflare.com/pages/get-started/git-integration/" target="_blank" rel="noopener">Cloudflare Pages：GitHub 連携</a>：Create application → Pages → Connect to Git、設定項目、Save and Deploy</li>
+    <li><a href="https://developers.cloudflare.com/pages/get-started/direct-upload/" target="_blank" rel="noopener">Cloudflare Pages：直接アップロード</a>：後から GitHub 連携に切り替えられない</li>
+    <li><a href="https://developers.cloudflare.com/workers/wrangler/commands/pages/" target="_blank" rel="noopener">Wrangler：pages deploy</a>：--project-name の指定</li>
+    <li><a href="https://developers.cloudflare.com/pages/configuration/headers/" target="_blank" rel="noopener">Cloudflare Pages：_headers</a>：pages.dev を検索に出さない書き方</li>
+    <li><a href="https://developers.cloudflare.com/pages/configuration/redirects/" target="_blank" rel="noopener">Cloudflare Pages：_redirects</a>：書き方、番号を書かないと 302、上限 2,100 件</li>
+    <li><a href="https://developers.cloudflare.com/pages/configuration/custom-domains/" target="_blank" rel="noopener">Cloudflare Pages：独自ドメイン</a>：Custom domains → Set up a domain、@ のドメインは同じアカウントに追加が必要</li>
+    <li><a href="https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-www-to-root/" target="_blank" rel="noopener">Cloudflare：www を外す転送の例</a>：<code>https://www.*</code> → <code>https://${1}</code>、301</li>
+    <li><a href="https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/" target="_blank" rel="noopener">Cloudflare：Always Use HTTPS</a></li>
+    <li><a href="https://developers.cloudflare.com/pages/platform/limits/" target="_blank" rel="noopener">Cloudflare Pages：上限</a>・<a href="https://developers.cloudflare.com/pages/functions/pricing/" target="_blank" rel="noopener">料金</a>：ビルド月500回、静的ページへのアクセスは無料・無制限</li>
+    <li><a href="https://developers.cloudflare.com/fundamentals/manage-members/manage/" target="_blank" rel="noopener">Cloudflare：メンバーの招待</a>・<a href="https://developers.cloudflare.com/fundamentals/manage-members/roles/" target="_blank" rel="noopener">役割</a>：Administrator はメンバーと支払いを管理できない</li>
+    <li><a href="https://developers.cloudflare.com/fundamentals/user-profiles/2fa/" target="_blank" rel="noopener">Cloudflare：2段階認証</a>：My Profile → Authentication、バックアップコード</li>
+    <li><a href="https://www.cloudflare.com/tld-policies/" target="_blank" rel="noopener">Cloudflare Registrar：対応ドメイン一覧</a>：.au は載っていない</li>
+    <li><a href="https://www.auda.org.au/policy/au-domain-administration-rules-licensing" target="_blank" rel="noopener">auDA：.au のルール</a>：オーストラリアに拠点がある事業者、名前の条件、1〜5年</li>
+    <li><a href="https://whois.auda.org.au/" target="_blank" rel="noopener">.au の WHOIS</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/microsoft-365/admin/get-help-with-domains/create-dns-records-at-any-dns-hosting-provider" target="_blank" rel="noopener">Microsoft 365：メール用の DNS</a>：autodiscover、selector1/selector2、SPF は1行</li>
+    <li><a href="https://support.google.com/a/answer/174124" target="_blank" rel="noopener">Google Workspace：DKIM</a>：google._domainkey（TXT）</li>
+    <li><a href="https://support.google.com/webmasters/answer/9008080" target="_blank" rel="noopener">Google Search Console：所有権の確認</a>：ドメインは DNS の TXT で確認、消すと外れる</li>
+    <li><a href="https://support.wix.com/en/article/changing-nameserver-ns-records-for-a-wix-domain" target="_blank" rel="noopener">Wix：ネームサーバーの変更</a>・<a href="https://support.wix.com/en/article/canceling-your-premium-plan-and-domain" target="_blank" rel="noopener">プランとドメインの解約</a></li>
+  </ul>
+  <p class="src-note">公式ページに書かれていないため、画面で確かめてほしいもの：Redirect Rule のテンプレート名、ネームサーバー再チェックのボタン名。</p>
 </section>
 
 <section class="stage words" id="words">
@@ -664,8 +704,8 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
   <div class="w-tools"><input type="search" id="wq" placeholder="言葉をさがす（例：MX）" aria-label="言葉をさがす"><span class="w-count" id="wcount"></span></div>
   <h3 class="w-cat">住所と建物（サイトの置き場所）</h3>
   <div class="w-grid">
-    <article class="w-item w-both" id="w-domain" data-search="ドメイン  ドメイン"><header><span class="w-b both">お客様も</span><h4>ドメイン</h4></header><p class="w-s">サイトとメールの住所。example.com.au のような文字列。毎年お金を払って借りている。</p><p class="w-a"><b>たとえ</b>お店の住所。</p></article>
-    <article class="w-item w-both" id="w-au" data-search=".com.au ドットコムドットエーユー .com.au"><header><span class="w-b both">お客様も</span><h4>.com.au</h4><span class="w-y">ドットコムドットエーユー</span></header><p class="w-s">オーストラリアの事業者向けのドメイン。ABN がある事業者だけが取れる。</p></article>
+    <article class="w-item w-both" id="w-domain" data-search="ドメイン  ドメイン"><header><span class="w-b both">お客様も</span><h4>ドメイン</h4></header><p class="w-s">サイトとメールの住所。example.com.au のような文字列。期間を決めて借り、更新し続けるもの（.au は1〜5年ごと）。</p><p class="w-a"><b>たとえ</b>お店の住所。</p></article>
+    <article class="w-item w-both" id="w-au" data-search=".com.au ドットコムドットエーユー .com.au"><header><span class="w-b both">お客様も</span><h4>.com.au</h4><span class="w-y">ドットコムドットエーユー</span></header><p class="w-s">オーストラリアの事業者向けのドメイン。オーストラリアに拠点がある事業者（ABN を持つ、または会社として登録済み）が取れる。名前は、お店・会社の名前や、扱う商品・サービスに合っている必要がある。</p></article>
     <article class="w-item w-both" id="w-registrar" data-search="ドメイン管理会社 レジストラ（registrar） ドメイン管理会社 管理会社 registrar"><header><span class="w-b both">お客様も</span><h4>ドメイン管理会社</h4><span class="w-y">レジストラ（Registrar）</span></header><p class="w-s">ドメインを契約している会社。GoDaddy、VentraIP、Crazy Domains など。WHOIS の Registrar 欄に出る。</p><p class="w-a"><b>たとえ</b>住所の大家さん。住所の持ち主はお客様、更新の手続きはここでする。</p></article>
     <article class="w-item w-both" id="w-server" data-search="サーバー  サーバー"><header><span class="w-b both">お客様も</span><h4>サーバー</h4></header><p class="w-s">サイトのデータを置いておくコンピューター。「ホスティング」とも言う。</p><p class="w-a"><b>たとえ</b>お店の建物。</p></article>
     <article class="w-item w-both" id="w-cloudflare" data-search="cloudflare クラウドフレア cloudflare"><header><span class="w-b both">お客様も</span><h4>Cloudflare</h4><span class="w-y">クラウドフレア</span></header><p class="w-s">サイトの置き場所と、案内板（DNS）の管理を、無料で引き受けてくれる会社。</p><p class="w-a"><b>たとえ</b>新しい建物と案内板を無料で貸してくれる会社。</p></article>
@@ -679,7 +719,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
     <article class="w-item w-both" id="w-record" data-search="dnsレコード  dnsレコード レコード"><header><span class="w-b both">お客様も</span><h4>DNSレコード</h4></header><p class="w-s">案内板の1行1行。種類ごとに A、CNAME、MX、TXT などがある。</p><p class="w-a"><b>たとえ</b>案内板の1行。</p></article>
     <article class="w-item w-both" id="w-ns" data-search="ネームサーバー nameservers ネームサーバー nameservers"><header><span class="w-b both">お客様も</span><h4>ネームサーバー</h4><span class="w-y">Nameservers</span></header><p class="w-s">案内板をどの会社に置くかの指定。2回目の面談で、これを Cloudflare の2つに書き換える。</p><p class="w-a"><b>たとえ</b>案内板の置き場所。</p></article>
     <article class="w-item w-both" id="w-active" data-search="active アクティブ active"><header><span class="w-b both">お客様も</span><h4>Active</h4><span class="w-y">アクティブ</span></header><p class="w-s">Cloudflare が案内板の引き継ぎを終えた状態。ここから公開の切り替えができる。</p></article>
-    <article class="w-item w-both" id="w-propagation" data-search="待ち時間（反映待ち）  待ち時間"><header><span class="w-b both">お客様も</span><h4>待ち時間（反映待ち）</h4></header><p class="w-s">書き換えた内容が世界中に伝わるまでの時間。ふつう数分〜数時間、長いと48時間。</p><p class="w-a"><b>たとえ</b>引っ越しのお知らせが全員に届くまでの時間。</p></article>
+    <article class="w-item w-both" id="w-propagation" data-search="待ち時間（反映待ち）  待ち時間"><header><span class="w-b both">お客様も</span><h4>待ち時間（反映待ち）</h4></header><p class="w-s">書き換えた内容が世界中に伝わるまでの時間。早ければ数分〜数時間。Cloudflare の案内では最大24時間、管理会社によっては48時間。</p><p class="w-a"><b>たとえ</b>引っ越しのお知らせが全員に届くまでの時間。</p></article>
     <article class="w-item w-both" id="w-dnssec" data-search="dnssec ディーエヌエスセック dnssec"><header><span class="w-b both">お客様も</span><h4>DNSSEC</h4><span class="w-y">ディーエヌエスセック</span></header><p class="w-s">案内板が偽物でないことを証明する鍵。引っ越しのときはいったん外す。外さないとつながらなくなる。</p><p class="w-a"><b>たとえ</b>案内板の封印。</p></article>
     <article class="w-item w-me" id="w-ds" data-search="ds レコード  ds レコード ds"><header><span class="w-b me">制作側だけ</span><h4>DS レコード</h4></header><p class="w-s">DNSSEC の鍵を管理会社に登録するための行。</p></article>
     <article class="w-item w-me" id="w-a" data-search="a レコード・cname エー・シーネーム cname"><header><span class="w-b me">制作側だけ</span><h4>A レコード・CNAME</h4><span class="w-y">エー・シーネーム</span></header><p class="w-s">サイトの行き先を書く行。A は番地（IPアドレス）で、CNAME は別の名前で行き先を指す。</p></article>
@@ -725,7 +765,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
     <article class="w-item w-both" id="w-deposit" data-search="着手金・残金 ちゃくしゅきん 着手金 残金"><header><span class="w-b both">お客様も</span><h4>着手金・残金</h4><span class="w-y">ちゃくしゅきん</span></header><p class="w-s">作り始める前に払う最初のお金と、公開後に払う残りのお金。</p></article>
     <article class="w-item w-both" id="w-maint" data-search="保守 ほしゅ 保守"><header><span class="w-b both">お客様も</span><h4>保守</h4><span class="w-y">ほしゅ</span></header><p class="w-s">公開後も、直しや見守りを続ける契約。</p><p class="w-a"><b>たとえ</b>定期点検の契約。</p></article>
     <article class="w-item w-both" id="w-license" data-search="使用許諾・譲渡 しようきょだく・じょうと 使用許諾 譲渡"><header><span class="w-b both">お客様も</span><h4>使用許諾・譲渡</h4><span class="w-y">しようきょだく・じょうと</span></header><p class="w-s">使用許諾＝使ってよい権利を渡す（作った物の持ち主は制作側のまま）。譲渡＝持ち主ごと渡す。</p><p class="w-a"><b>たとえ</b>賃貸と購入の違い。</p></article>
-    <article class="w-item w-both" id="w-abn" data-search="abn エービーエヌ abn"><header><span class="w-b both">お客様も</span><h4>ABN</h4><span class="w-y">エービーエヌ</span></header><p class="w-s">オーストラリアの事業者番号。.com.au を持つのに必要で、管理会社の本人確認にも使われる。</p></article>
+    <article class="w-item w-both" id="w-abn" data-search="abn エービーエヌ abn"><header><span class="w-b both">お客様も</span><h4>ABN</h4><span class="w-y">エービーエヌ</span></header><p class="w-s">オーストラリアの事業者番号。個人事業主が .com.au を持つには ABN が要る（会社は会社登録でも可）。</p></article>
   </div>
   <h3 class="w-cat">制作側が使う道具</h3>
   <div class="w-grid">
@@ -804,7 +844,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
 </script>
 <script>
 (function(){
-  var T = [{"k": "domain", "t": "ドメイン", "y": "", "s": "サイトとメールの住所。example.com.au のような文字列。毎年お金を払って借りている。", "a": "お店の住所。", "who": "both", "p": ["ドメイン"]}, {"k": "au", "t": ".com.au", "y": "ドットコムドットエーユー", "s": "オーストラリアの事業者向けのドメイン。ABN がある事業者だけが取れる。", "a": "", "who": "both", "p": [".com.au"]}, {"k": "registrar", "t": "ドメイン管理会社", "y": "レジストラ（Registrar）", "s": "ドメインを契約している会社。GoDaddy、VentraIP、Crazy Domains など。WHOIS の Registrar 欄に出る。", "a": "住所の大家さん。住所の持ち主はお客様、更新の手続きはここでする。", "who": "both", "p": ["ドメイン管理会社", "管理会社", "Registrar"]}, {"k": "server", "t": "サーバー", "y": "", "s": "サイトのデータを置いておくコンピューター。「ホスティング」とも言う。", "a": "お店の建物。", "who": "both", "p": ["サーバー"]}, {"k": "cloudflare", "t": "Cloudflare", "y": "クラウドフレア", "s": "サイトの置き場所と、案内板（DNS）の管理を、無料で引き受けてくれる会社。", "a": "新しい建物と案内板を無料で貸してくれる会社。", "who": "both", "p": ["Cloudflare"]}, {"k": "pages", "t": "Cloudflare Pages", "y": "クラウドフレア・ページズ", "s": "Cloudflare の中の、サイトを置く機能。お店のサイトなら無料の範囲で動く。", "a": "", "who": "both", "p": ["Cloudflare Pages", "Pages"]}, {"k": "pagesdev", "t": "確認用URL（pages.dev）", "y": "", "s": "公開前のサイトを見るための仮の住所。「お店の名前.pages.dev」。検索には出ないようにしてある。", "a": "内覧用の仮住所。", "who": "both", "p": ["確認用URL", "pages.dev"]}, {"k": "builder", "t": "Wix・Squarespace・WordPress", "y": "ウィックス・スクエアスペース・ワードプレス", "s": "今のサイトを作っている、よくあるサービス。解約のタイミングに注意が要る。", "a": "今の建物の家主。", "who": "both", "p": ["Wix", "Squarespace", "WordPress"]}, {"k": "dns", "t": "DNS", "y": "ディーエヌエス", "s": "住所（ドメイン）を見て「サイトはこの建物、メールはこの郵便受け」と案内する仕組み。", "a": "ビルの入口の案内板。", "who": "both", "p": ["DNS"]}, {"k": "record", "t": "DNSレコード", "y": "", "s": "案内板の1行1行。種類ごとに A、CNAME、MX、TXT などがある。", "a": "案内板の1行。", "who": "both", "p": ["DNSレコード", "レコード"]}, {"k": "ns", "t": "ネームサーバー", "y": "Nameservers", "s": "案内板をどの会社に置くかの指定。2回目の面談で、これを Cloudflare の2つに書き換える。", "a": "案内板の置き場所。", "who": "both", "p": ["ネームサーバー", "Nameservers"]}, {"k": "active", "t": "Active", "y": "アクティブ", "s": "Cloudflare が案内板の引き継ぎを終えた状態。ここから公開の切り替えができる。", "a": "", "who": "both", "p": ["Active"]}, {"k": "propagation", "t": "待ち時間（反映待ち）", "y": "", "s": "書き換えた内容が世界中に伝わるまでの時間。ふつう数分〜数時間、長いと48時間。", "a": "引っ越しのお知らせが全員に届くまでの時間。", "who": "both", "p": ["待ち時間"]}, {"k": "dnssec", "t": "DNSSEC", "y": "ディーエヌエスセック", "s": "案内板が偽物でないことを証明する鍵。引っ越しのときはいったん外す。外さないとつながらなくなる。", "a": "案内板の封印。", "who": "both", "p": ["DNSSEC"]}, {"k": "ds", "t": "DS レコード", "y": "", "s": "DNSSEC の鍵を管理会社に登録するための行。", "a": "", "who": "me", "p": ["DS レコード", "DS"]}, {"k": "a", "t": "A レコード・CNAME", "y": "エー・シーネーム", "s": "サイトの行き先を書く行。A は番地（IPアドレス）で、CNAME は別の名前で行き先を指す。", "a": "", "who": "me", "p": ["CNAME"]}, {"k": "at", "t": "@ と www", "y": "アット・ダブリューダブリューダブリュー", "s": "@ は example.com.au そのもの、www は www.example.com.au。どちらで打っても同じページに来るようにする。", "a": "", "who": "both", "p": ["www"]}, {"k": "proxy", "t": "オレンジの雲・グレーの雲", "y": "Proxy status", "s": "オレンジ＝Cloudflare が間に入って守る・速くする。グレー＝案内だけ。メールの行は必ずグレー。", "a": "", "who": "me", "p": ["グレーの雲", "オレンジの雲", "Proxy status"]}, {"k": "workspace", "t": "Google Workspace・Microsoft 365", "y": "グーグル・ワークスペース／マイクロソフト・サンロクゴ", "s": "お店のドメインのメール（info@お店.com.au など）を使うための有料サービス。Gmail・Outlook の会社版。", "a": "郵便受けを貸してくれる会社。", "who": "both", "p": ["Google Workspace", "Microsoft 365"]}, {"k": "mx", "t": "MX", "y": "エムエックス", "s": "メールの届け先を書いた行。これが消えたり変わったりすると、メールが届かなくなる。", "a": "郵便受けの場所。", "who": "both", "p": ["MX"]}, {"k": "txt", "t": "TXT", "y": "テキスト", "s": "自由に文字を書ける行。下の SPF・DMARC や、Google などの持ち主確認に使う。", "a": "", "who": "me", "p": ["TXT"]}, {"k": "spf", "t": "SPF", "y": "エスピーエフ", "s": "「このお店のメールを送っていいのはこの会社だけ」という宣言。ないと迷惑メール扱いされやすい。", "a": "差出人の名簿。", "who": "me", "p": ["SPF"]}, {"k": "dkim", "t": "DKIM", "y": "ディーキム", "s": "送ったメールに押す電子の印鑑。本物のメールだと相手に示す。", "a": "封筒の割り印。", "who": "me", "p": ["DKIM"]}, {"k": "dmarc", "t": "DMARC", "y": "ディーマーク", "s": "SPF・DKIM に合わないメールを相手側でどう扱うかの方針。", "a": "", "who": "me", "p": ["DMARC", "_dmarc"]}, {"k": "autodiscover", "t": "autodiscover", "y": "オートディスカバー", "s": "Outlook がメールの設定を自動で見つけるための行。Microsoft 365 で使う。", "a": "", "who": "me", "p": ["autodiscover"]}, {"k": "customdomain", "t": "独自ドメインをつなぐ（Custom domains）", "y": "カスタムドメイン", "s": "pages.dev ではなく、お店のドメインでサイトを出す設定。", "a": "仮住所から本当の住所へ表札を掛け替える。", "who": "both", "p": ["Custom domains", "独自ドメイン"]}, {"k": "ssl", "t": "https・SSL証明書", "y": "エスエスエル", "s": "通信を暗号化する仕組み。アドレス欄の鍵マーク。Cloudflare が自動で用意する。", "a": "封筒の封。", "who": "both", "p": ["証明書", "https"]}, {"k": "redirect", "t": "転送（301リダイレクト）", "y": "", "s": "古いURLに来た人を、新しいページへ自動で案内すること。Google の評価も引き継がれる。", "a": "転居届。", "who": "both", "p": ["転送", "301"]}, {"k": "redirects", "t": "_redirects", "y": "リダイレクツ", "s": "転送のリストを書くファイル。「古いURL → 新しいURL」を1行ずつ書く。", "a": "", "who": "me", "p": ["_redirects"]}, {"k": "headers", "t": "_headers", "y": "ヘッダーズ", "s": "ページに付ける追加の指示を書くファイル。ここでは「確認用URLは検索に出さない」に使う。", "a": "", "who": "me", "p": ["_headers"]}, {"k": "noindex", "t": "noindex", "y": "ノーインデックス", "s": "「このページを検索に出さないで」という札。公開後の本番には付けない。", "a": "「準備中」の札。", "who": "both", "p": ["noindex"]}, {"k": "robots", "t": "robots.txt", "y": "ロボッツ", "s": "検索エンジンへの立ち入りルールを書くファイル。", "a": "", "who": "me", "p": ["robots.txt"]}, {"k": "sitemap", "t": "sitemap.xml", "y": "サイトマップ", "s": "サイトの全ページの一覧。検索エンジンに渡す。", "a": "館内案内図。", "who": "me", "p": ["sitemap.xml"]}, {"k": "canonical", "t": "canonical", "y": "カノニカル", "s": "「本物のページはこちら」という印。同じ中身のページが2つあるときの混乱を防ぐ。", "a": "", "who": "me", "p": ["canonical"]}, {"k": "404", "t": "404", "y": "ヨンマルヨン", "s": "「そのページはありません」と出る画面。古いURLが転送されていないと出る。", "a": "「この部屋はありません」の貼り紙。", "who": "both", "p": ["404"]}, {"k": "redirectrules", "t": "Redirect Rules", "y": "リダイレクト・ルールズ", "s": "Cloudflare 側で転送を決める機能。www あり・なしを1つにまとめるのに使う。", "a": "", "who": "me", "p": ["Redirect Rules"]}, {"k": "alwayshttps", "t": "Always Use HTTPS", "y": "", "s": "http（鍵なし）で来た人を、自動で https（鍵あり）へ回す設定。", "a": "", "who": "me", "p": ["Always Use HTTPS"]}, {"k": "gsc", "t": "Google Search Console", "y": "サーチコンソール", "s": "Google にサイトを知らせ、検索での見え方や不具合を確かめる無料の道具。", "a": "Google への開店届と健康診断。", "who": "both", "p": ["Google Search Console", "Search Console"]}, {"k": "gbp", "t": "Googleビジネスプロフィール", "y": "", "s": "Google マップに出るお店の情報。サイトのURLもここに載る。", "a": "", "who": "both", "p": ["Googleビジネスプロフィール"]}, {"k": "ga4", "t": "GA4", "y": "ジーエーフォー", "s": "Google アナリティクス。何人がサイトを見に来たかを数える道具。", "a": "来店カウンター。", "who": "both", "p": ["GA4"]}, {"k": "account", "t": "アカウント", "y": "", "s": "サービスを使うための登録。メールアドレスとパスワードでログインする。", "a": "会員証。", "who": "both", "p": ["アカウント"]}, {"k": "2fa", "t": "2段階認証", "y": "", "s": "パスワードに加えて、スマホに出る番号でも本人か確かめる仕組み。乗っ取りを防ぐ。", "a": "鍵を2つ掛ける。", "who": "both", "p": ["2段階認証"]}, {"k": "invite", "t": "招待・Administrator", "y": "アドミニストレーター", "s": "自分のアカウントに他の人を入れること。Administrator はほぼ何でも操作できる権限。外せばすぐ入れなくなる。", "a": "合鍵を渡す。返してもらえば終わり。", "who": "both", "p": ["Administrator", "招待"]}, {"k": "deposit", "t": "着手金・残金", "y": "ちゃくしゅきん", "s": "作り始める前に払う最初のお金と、公開後に払う残りのお金。", "a": "", "who": "both", "p": ["着手金", "残金"]}, {"k": "maint", "t": "保守", "y": "ほしゅ", "s": "公開後も、直しや見守りを続ける契約。", "a": "定期点検の契約。", "who": "both", "p": ["保守"]}, {"k": "license", "t": "使用許諾・譲渡", "y": "しようきょだく・じょうと", "s": "使用許諾＝使ってよい権利を渡す（作った物の持ち主は制作側のまま）。譲渡＝持ち主ごと渡す。", "a": "賃貸と購入の違い。", "who": "both", "p": ["使用許諾", "譲渡"]}, {"k": "abn", "t": "ABN", "y": "エービーエヌ", "s": "オーストラリアの事業者番号。.com.au を持つのに必要で、管理会社の本人確認にも使われる。", "a": "", "who": "both", "p": ["ABN"]}, {"k": "github", "t": "GitHub", "y": "ギットハブ", "s": "サイトのファイルを保管し、変更の履歴を残すサービス。", "a": "設計図の保管庫。", "who": "me", "p": ["GitHub"]}, {"k": "repo", "t": "リポジトリ", "y": "", "s": "GitHub の中の、サイトごとの保管箱。", "a": "", "who": "me", "p": ["リポジトリ"]}, {"k": "push", "t": "push", "y": "プッシュ", "s": "手元の変更を GitHub に送ること。Pages とつながっていれば、送るだけで公開中のサイトも更新される。", "a": "", "who": "me", "p": ["push"]}, {"k": "branch", "t": "main（Production branch）", "y": "メイン・ブランチ", "s": "本番として公開する版の名前。", "a": "", "who": "me", "p": ["Production branch"]}, {"k": "build", "t": "Build command・output directory・Framework preset", "y": "ビルド", "s": "サイトを組み立てる命令と、出来上がりの置き場所の設定。手書きの HTML なら組み立ては不要。", "a": "", "who": "me", "p": ["Build command", "Build output directory", "Framework preset"]}, {"k": "wrangler", "t": "wrangler", "y": "ラングラー", "s": "Cloudflare を文字の命令（コマンド）で操作する道具。", "a": "", "who": "me", "p": ["wrangler"]}, {"k": "whois", "t": "whois", "y": "フーイズ", "s": "ドメインの登録情報（管理会社など）を調べる命令。", "a": "住所の登記簿を見る。", "who": "me", "p": ["whois", "WHOIS"]}, {"k": "dig", "t": "dig", "y": "ディグ", "s": "DNS の中身（案内板の各行）を調べる命令。", "a": "案内板を読みに行く。", "who": "me", "p": ["dig"]}, {"k": "curl", "t": "curl", "y": "カール", "s": "ページを取りに行き、返ってきた答えを見る命令。転送や noindex の確認に使う。", "a": "", "who": "me", "p": ["curl"]}, {"k": "workers", "t": "Workers・D1", "y": "ワーカーズ・ディーワン", "s": "Cloudflare でプログラムを動かす機能と、データを保存する機能。問い合わせフォームや投稿機能で使う。", "a": "", "who": "me", "p": ["Workers", "D1"]}];
+  var T = [{"k": "domain", "t": "ドメイン", "y": "", "s": "サイトとメールの住所。example.com.au のような文字列。期間を決めて借り、更新し続けるもの（.au は1〜5年ごと）。", "a": "お店の住所。", "who": "both", "p": ["ドメイン"]}, {"k": "au", "t": ".com.au", "y": "ドットコムドットエーユー", "s": "オーストラリアの事業者向けのドメイン。オーストラリアに拠点がある事業者（ABN を持つ、または会社として登録済み）が取れる。名前は、お店・会社の名前や、扱う商品・サービスに合っている必要がある。", "a": "", "who": "both", "p": [".com.au"]}, {"k": "registrar", "t": "ドメイン管理会社", "y": "レジストラ（Registrar）", "s": "ドメインを契約している会社。GoDaddy、VentraIP、Crazy Domains など。WHOIS の Registrar 欄に出る。", "a": "住所の大家さん。住所の持ち主はお客様、更新の手続きはここでする。", "who": "both", "p": ["ドメイン管理会社", "管理会社", "Registrar"]}, {"k": "server", "t": "サーバー", "y": "", "s": "サイトのデータを置いておくコンピューター。「ホスティング」とも言う。", "a": "お店の建物。", "who": "both", "p": ["サーバー"]}, {"k": "cloudflare", "t": "Cloudflare", "y": "クラウドフレア", "s": "サイトの置き場所と、案内板（DNS）の管理を、無料で引き受けてくれる会社。", "a": "新しい建物と案内板を無料で貸してくれる会社。", "who": "both", "p": ["Cloudflare"]}, {"k": "pages", "t": "Cloudflare Pages", "y": "クラウドフレア・ページズ", "s": "Cloudflare の中の、サイトを置く機能。お店のサイトなら無料の範囲で動く。", "a": "", "who": "both", "p": ["Cloudflare Pages", "Pages"]}, {"k": "pagesdev", "t": "確認用URL（pages.dev）", "y": "", "s": "公開前のサイトを見るための仮の住所。「お店の名前.pages.dev」。検索には出ないようにしてある。", "a": "内覧用の仮住所。", "who": "both", "p": ["確認用URL", "pages.dev"]}, {"k": "builder", "t": "Wix・Squarespace・WordPress", "y": "ウィックス・スクエアスペース・ワードプレス", "s": "今のサイトを作っている、よくあるサービス。解約のタイミングに注意が要る。", "a": "今の建物の家主。", "who": "both", "p": ["Wix", "Squarespace", "WordPress"]}, {"k": "dns", "t": "DNS", "y": "ディーエヌエス", "s": "住所（ドメイン）を見て「サイトはこの建物、メールはこの郵便受け」と案内する仕組み。", "a": "ビルの入口の案内板。", "who": "both", "p": ["DNS"]}, {"k": "record", "t": "DNSレコード", "y": "", "s": "案内板の1行1行。種類ごとに A、CNAME、MX、TXT などがある。", "a": "案内板の1行。", "who": "both", "p": ["DNSレコード", "レコード"]}, {"k": "ns", "t": "ネームサーバー", "y": "Nameservers", "s": "案内板をどの会社に置くかの指定。2回目の面談で、これを Cloudflare の2つに書き換える。", "a": "案内板の置き場所。", "who": "both", "p": ["ネームサーバー", "Nameservers"]}, {"k": "active", "t": "Active", "y": "アクティブ", "s": "Cloudflare が案内板の引き継ぎを終えた状態。ここから公開の切り替えができる。", "a": "", "who": "both", "p": ["Active"]}, {"k": "propagation", "t": "待ち時間（反映待ち）", "y": "", "s": "書き換えた内容が世界中に伝わるまでの時間。早ければ数分〜数時間。Cloudflare の案内では最大24時間、管理会社によっては48時間。", "a": "引っ越しのお知らせが全員に届くまでの時間。", "who": "both", "p": ["待ち時間"]}, {"k": "dnssec", "t": "DNSSEC", "y": "ディーエヌエスセック", "s": "案内板が偽物でないことを証明する鍵。引っ越しのときはいったん外す。外さないとつながらなくなる。", "a": "案内板の封印。", "who": "both", "p": ["DNSSEC"]}, {"k": "ds", "t": "DS レコード", "y": "", "s": "DNSSEC の鍵を管理会社に登録するための行。", "a": "", "who": "me", "p": ["DS レコード", "DS"]}, {"k": "a", "t": "A レコード・CNAME", "y": "エー・シーネーム", "s": "サイトの行き先を書く行。A は番地（IPアドレス）で、CNAME は別の名前で行き先を指す。", "a": "", "who": "me", "p": ["CNAME"]}, {"k": "at", "t": "@ と www", "y": "アット・ダブリューダブリューダブリュー", "s": "@ は example.com.au そのもの、www は www.example.com.au。どちらで打っても同じページに来るようにする。", "a": "", "who": "both", "p": ["www"]}, {"k": "proxy", "t": "オレンジの雲・グレーの雲", "y": "Proxy status", "s": "オレンジ＝Cloudflare が間に入って守る・速くする。グレー＝案内だけ。メールの行は必ずグレー。", "a": "", "who": "me", "p": ["グレーの雲", "オレンジの雲", "Proxy status"]}, {"k": "workspace", "t": "Google Workspace・Microsoft 365", "y": "グーグル・ワークスペース／マイクロソフト・サンロクゴ", "s": "お店のドメインのメール（info@お店.com.au など）を使うための有料サービス。Gmail・Outlook の会社版。", "a": "郵便受けを貸してくれる会社。", "who": "both", "p": ["Google Workspace", "Microsoft 365"]}, {"k": "mx", "t": "MX", "y": "エムエックス", "s": "メールの届け先を書いた行。これが消えたり変わったりすると、メールが届かなくなる。", "a": "郵便受けの場所。", "who": "both", "p": ["MX"]}, {"k": "txt", "t": "TXT", "y": "テキスト", "s": "自由に文字を書ける行。下の SPF・DMARC や、Google などの持ち主確認に使う。", "a": "", "who": "me", "p": ["TXT"]}, {"k": "spf", "t": "SPF", "y": "エスピーエフ", "s": "「このお店のメールを送っていいのはこの会社だけ」という宣言。ないと迷惑メール扱いされやすい。", "a": "差出人の名簿。", "who": "me", "p": ["SPF"]}, {"k": "dkim", "t": "DKIM", "y": "ディーキム", "s": "送ったメールに押す電子の印鑑。本物のメールだと相手に示す。", "a": "封筒の割り印。", "who": "me", "p": ["DKIM"]}, {"k": "dmarc", "t": "DMARC", "y": "ディーマーク", "s": "SPF・DKIM に合わないメールを相手側でどう扱うかの方針。", "a": "", "who": "me", "p": ["DMARC", "_dmarc"]}, {"k": "autodiscover", "t": "autodiscover", "y": "オートディスカバー", "s": "Outlook がメールの設定を自動で見つけるための行。Microsoft 365 で使う。", "a": "", "who": "me", "p": ["autodiscover"]}, {"k": "customdomain", "t": "独自ドメインをつなぐ（Custom domains）", "y": "カスタムドメイン", "s": "pages.dev ではなく、お店のドメインでサイトを出す設定。", "a": "仮住所から本当の住所へ表札を掛け替える。", "who": "both", "p": ["Custom domains", "独自ドメイン"]}, {"k": "ssl", "t": "https・SSL証明書", "y": "エスエスエル", "s": "通信を暗号化する仕組み。アドレス欄の鍵マーク。Cloudflare が自動で用意する。", "a": "封筒の封。", "who": "both", "p": ["証明書", "https"]}, {"k": "redirect", "t": "転送（301リダイレクト）", "y": "", "s": "古いURLに来た人を、新しいページへ自動で案内すること。Google の評価も引き継がれる。", "a": "転居届。", "who": "both", "p": ["転送", "301"]}, {"k": "redirects", "t": "_redirects", "y": "リダイレクツ", "s": "転送のリストを書くファイル。「古いURL → 新しいURL」を1行ずつ書く。", "a": "", "who": "me", "p": ["_redirects"]}, {"k": "headers", "t": "_headers", "y": "ヘッダーズ", "s": "ページに付ける追加の指示を書くファイル。ここでは「確認用URLは検索に出さない」に使う。", "a": "", "who": "me", "p": ["_headers"]}, {"k": "noindex", "t": "noindex", "y": "ノーインデックス", "s": "「このページを検索に出さないで」という札。公開後の本番には付けない。", "a": "「準備中」の札。", "who": "both", "p": ["noindex"]}, {"k": "robots", "t": "robots.txt", "y": "ロボッツ", "s": "検索エンジンへの立ち入りルールを書くファイル。", "a": "", "who": "me", "p": ["robots.txt"]}, {"k": "sitemap", "t": "sitemap.xml", "y": "サイトマップ", "s": "サイトの全ページの一覧。検索エンジンに渡す。", "a": "館内案内図。", "who": "me", "p": ["sitemap.xml"]}, {"k": "canonical", "t": "canonical", "y": "カノニカル", "s": "「本物のページはこちら」という印。同じ中身のページが2つあるときの混乱を防ぐ。", "a": "", "who": "me", "p": ["canonical"]}, {"k": "404", "t": "404", "y": "ヨンマルヨン", "s": "「そのページはありません」と出る画面。古いURLが転送されていないと出る。", "a": "「この部屋はありません」の貼り紙。", "who": "both", "p": ["404"]}, {"k": "redirectrules", "t": "Redirect Rules", "y": "リダイレクト・ルールズ", "s": "Cloudflare 側で転送を決める機能。www あり・なしを1つにまとめるのに使う。", "a": "", "who": "me", "p": ["Redirect Rules"]}, {"k": "alwayshttps", "t": "Always Use HTTPS", "y": "", "s": "http（鍵なし）で来た人を、自動で https（鍵あり）へ回す設定。", "a": "", "who": "me", "p": ["Always Use HTTPS"]}, {"k": "gsc", "t": "Google Search Console", "y": "サーチコンソール", "s": "Google にサイトを知らせ、検索での見え方や不具合を確かめる無料の道具。", "a": "Google への開店届と健康診断。", "who": "both", "p": ["Google Search Console", "Search Console"]}, {"k": "gbp", "t": "Googleビジネスプロフィール", "y": "", "s": "Google マップに出るお店の情報。サイトのURLもここに載る。", "a": "", "who": "both", "p": ["Googleビジネスプロフィール"]}, {"k": "ga4", "t": "GA4", "y": "ジーエーフォー", "s": "Google アナリティクス。何人がサイトを見に来たかを数える道具。", "a": "来店カウンター。", "who": "both", "p": ["GA4"]}, {"k": "account", "t": "アカウント", "y": "", "s": "サービスを使うための登録。メールアドレスとパスワードでログインする。", "a": "会員証。", "who": "both", "p": ["アカウント"]}, {"k": "2fa", "t": "2段階認証", "y": "", "s": "パスワードに加えて、スマホに出る番号でも本人か確かめる仕組み。乗っ取りを防ぐ。", "a": "鍵を2つ掛ける。", "who": "both", "p": ["2段階認証"]}, {"k": "invite", "t": "招待・Administrator", "y": "アドミニストレーター", "s": "自分のアカウントに他の人を入れること。Administrator はほぼ何でも操作できる権限。外せばすぐ入れなくなる。", "a": "合鍵を渡す。返してもらえば終わり。", "who": "both", "p": ["Administrator", "招待"]}, {"k": "deposit", "t": "着手金・残金", "y": "ちゃくしゅきん", "s": "作り始める前に払う最初のお金と、公開後に払う残りのお金。", "a": "", "who": "both", "p": ["着手金", "残金"]}, {"k": "maint", "t": "保守", "y": "ほしゅ", "s": "公開後も、直しや見守りを続ける契約。", "a": "定期点検の契約。", "who": "both", "p": ["保守"]}, {"k": "license", "t": "使用許諾・譲渡", "y": "しようきょだく・じょうと", "s": "使用許諾＝使ってよい権利を渡す（作った物の持ち主は制作側のまま）。譲渡＝持ち主ごと渡す。", "a": "賃貸と購入の違い。", "who": "both", "p": ["使用許諾", "譲渡"]}, {"k": "abn", "t": "ABN", "y": "エービーエヌ", "s": "オーストラリアの事業者番号。個人事業主が .com.au を持つには ABN が要る（会社は会社登録でも可）。", "a": "", "who": "both", "p": ["ABN"]}, {"k": "github", "t": "GitHub", "y": "ギットハブ", "s": "サイトのファイルを保管し、変更の履歴を残すサービス。", "a": "設計図の保管庫。", "who": "me", "p": ["GitHub"]}, {"k": "repo", "t": "リポジトリ", "y": "", "s": "GitHub の中の、サイトごとの保管箱。", "a": "", "who": "me", "p": ["リポジトリ"]}, {"k": "push", "t": "push", "y": "プッシュ", "s": "手元の変更を GitHub に送ること。Pages とつながっていれば、送るだけで公開中のサイトも更新される。", "a": "", "who": "me", "p": ["push"]}, {"k": "branch", "t": "main（Production branch）", "y": "メイン・ブランチ", "s": "本番として公開する版の名前。", "a": "", "who": "me", "p": ["Production branch"]}, {"k": "build", "t": "Build command・output directory・Framework preset", "y": "ビルド", "s": "サイトを組み立てる命令と、出来上がりの置き場所の設定。手書きの HTML なら組み立ては不要。", "a": "", "who": "me", "p": ["Build command", "Build output directory", "Framework preset"]}, {"k": "wrangler", "t": "wrangler", "y": "ラングラー", "s": "Cloudflare を文字の命令（コマンド）で操作する道具。", "a": "", "who": "me", "p": ["wrangler"]}, {"k": "whois", "t": "whois", "y": "フーイズ", "s": "ドメインの登録情報（管理会社など）を調べる命令。", "a": "住所の登記簿を見る。", "who": "me", "p": ["whois", "WHOIS"]}, {"k": "dig", "t": "dig", "y": "ディグ", "s": "DNS の中身（案内板の各行）を調べる命令。", "a": "案内板を読みに行く。", "who": "me", "p": ["dig"]}, {"k": "curl", "t": "curl", "y": "カール", "s": "ページを取りに行き、返ってきた答えを見る命令。転送や noindex の確認に使う。", "a": "", "who": "me", "p": ["curl"]}, {"k": "workers", "t": "Workers・D1", "y": "ワーカーズ・ディーワン", "s": "Cloudflare でプログラムを動かす機能と、データを保存する機能。問い合わせフォームや投稿機能で使う。", "a": "", "who": "me", "p": ["Workers", "D1"]}];
   var byKey = {}; T.forEach(function(t){byKey[t.k]=t});
   var pats = [];
   T.forEach(function(t){t.p.forEach(function(p){pats.push({p:p,k:t.k})})});
@@ -813,7 +853,7 @@ npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
   var re = new RegExp('(?<![A-Za-z0-9_.@/-])(' + pats.map(function(x){return esc(x.p)}).join('|') + ')(?![A-Za-z0-9_])', 'g');
   var lookup = {}; pats.forEach(function(x){lookup[x.p]=x.k});
   var SKIP = {CODE:1,PRE:1,BUTTON:1,A:1,SCRIPT:1,STYLE:1,INPUT:1,H1:1};
-  var scopes = [].slice.call(document.querySelectorAll('.overview .steps, .verdict, .stage:not(.words)'));
+  var scopes = [].slice.call(document.querySelectorAll('.overview .steps, .verdict, .stage:not(.words):not(.sources)'));
   scopes.forEach(function(scope){
     var seen = {};
     var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {acceptNode:function(n){
