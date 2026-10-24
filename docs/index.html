@@ -344,8 +344,10 @@ body[data-f="client"] .w-me{display:none}
     <ul class="check">
       <li><input type="checkbox" id="s0m1"><label for="s0m1">送る直前に、お店が営業中か Google マップで確かめる</label></li>
       <li><input type="checkbox" id="s0m2"><label for="s0m2">試作URL（〇〇.pages.dev など、検索に出ない設定のもの）と、初回面談の予約ページのリンクを入れて送る</label></li>
+      <li><input type="checkbox" id="s0m4"><label for="s0m4">メールにはこちらの名前（屋号）と連絡先、「今後のご案内が不要ならご返信ください」などの配信停止の案内を必ず入れる。停止の依頼が来たら5営業日以内に止める</label></li>
       <li><input type="checkbox" id="s0m3"><label for="s0m3">返信が来たら、面談の日時と場所（お店／カフェ／オンライン）を決める</label></li>
     </ul>
+    <div class="note warn"><b class="lbl">オーストラリアのスパム法（Spam Act 2003）</b>営業メールは、原則として相手の同意が必要で、送り主の名前と連絡先、配信停止の方法を入れることが義務です（停止は5営業日以内）。お店が公開しているアドレスでも、公開されているだけでは同意にはなりません。条件付きで認められる場合（その店の仕事に関係する内容など）があるので、細かい条件は ACMA（豪州の通信当局）の案内と法律の条文で確かめ、迷ったら専門家に聞いてください。</div>
   </div>
 
   <div class="role client reveal">
@@ -367,8 +369,8 @@ body[data-f="client"] .w-me{display:none}
     <div class="role-h"><h3>制作側：面談の前にやっておくこと</h3><span class="time">前日まで・30分</span></div>
     <p>ドメインとDNSの情報は誰でも調べられるので、会う前に済ませておきます。</p>
     <ul class="check">
-      <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auDA の公式 WHOIS <code>whois.auda.org.au</code> でも可）。Registrar の欄を見る</label></li>
-      <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX に google なら Google Workspace、outlook なら Microsoft 365）</label></li>
+      <li><input type="checkbox" id="s1p1"><label for="s1p1">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auDA の公式 WHOIS <code>whois.auda.org.au</code> でも可）。.au なら Registrar Name の欄を見る</label></li>
+      <li><input type="checkbox" id="s1p2"><label for="s1p2">今のDNSを記録する（メールの種類もここで分かる。MX が smtp.google.com や aspmx…google.com なら Google Workspace、…mail.protection.outlook.com なら Microsoft 365）</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>dig example.com.au NS +short
 dig example.com.au A +short
@@ -451,7 +453,7 @@ dig selector1._domainkey.example.com.au CNAME +short</pre></div>
     <ul class="check">
       <li><input type="checkbox" id="s2m1"><label for="s2m1">修正を反映する。範囲外の依頼は先に追加料金を伝える</label></li>
       <li><input type="checkbox" id="s2m2"><label for="s2m2">旧サイトの全ページと突き合わせ、情報の抜けがないか確かめる（協賛ロゴ・規約・採用など脇の情報ほど抜ける）</label></li>
-      <li><input type="checkbox" id="s2m3"><label for="s2m3"><code>_redirects</code> で旧URLを新しいページへ転送する</label></li>
+      <li><input type="checkbox" id="s2m3"><label for="s2m3"><code>_redirects</code> で旧URLを新しいページへ転送する。番号を書かないと一時的な転送（302）になるので、必ず <code>301</code> を付ける。転送は少なくとも1年は残す（Google の推奨）</label></li>
       <li><input type="checkbox" id="s2m4"><label for="s2m4"><code>sitemap.xml</code>・<code>robots.txt</code>・canonical を本番ドメインで書いておく</label></li>
     </ul>
     <div class="code"><button type="button">コピー</button><pre>/about-us        /about/     301
@@ -464,8 +466,8 @@ dig selector1._domainkey.example.com.au CNAME +short</pre></div>
       <li>dash.cloudflare.com で、左上のアカウント名から<strong>お客様のアカウント</strong>に切り替える（自分のアカウントに作らない）</li>
       <li>Workers &amp; Pages → Create application → Pages → Connect to Git</li>
       <li>GitHub の画面で、このサイトのリポジトリだけを許可する（Only select repositories）</li>
-      <li>設定：Project name＝お店の名前を英小文字で（例：shop-name）／Production branch＝main／Framework preset＝None／Build command＝空欄／Build output directory＝HTMLのフォルダ</li>
-      <li>Save and Deploy → <code>https://shop-name.pages.dev</code> が開ける</li>
+      <li>設定：Project name＝お店の名前を英小文字で（例：shop-name）／Production branch＝main／Framework preset＝None／Build command＝空欄（通らなければ <code>exit 0</code>。どちらも Cloudflare 公式の案内）／Build output directory＝HTMLのフォルダ</li>
+      <li>Save and Deploy → <code>https://shop-name.pages.dev</code> が開ける（その名前がすでに使われていると末尾にランダムな文字が付く。作った後は変えられないので、名前は慎重に）</li>
     </ol>
     <p>GitHub をお客様のアカウントとつなぎたくない場合は、手元から直接上げる（後からGitHub連携には切り替えられない）。</p>
     <div class="code"><button type="button">コピー</button><pre>npx wrangler login
@@ -662,15 +664,15 @@ https://:version.:project.pages.dev/*
   <details><summary>新しいサイトが自分のスマホだけ出ない</summary><p>古い情報が残っているだけのことが多いです。携帯回線に切り替えるか、数時間待ちます。</p></details>
   <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains の Status が Active か確かめます。証明書の発行中なら数分〜数時間待ちます。</p></details>
   <details><summary>Cloudflare の画面がこの手順書と違う</summary><p>Cloudflare は画面の名前がよく変わります。この手順書は2026年10月時点です。上の検索バーで英語の名前（Custom domains など）を入れると早く見つかります。</p></details>
-  <details><summary>Wix でサイトのプランを解約すると、ドメインも消える？</summary><p>消えません。Wix ではサイトのプランとドメインは別の契約で、プランを解約してもドメインは解約されません（Wix 公式）。ドメインの自動更新はオンのままにしておきます。</p></details>
-  <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます（Cloudflare 公式：静的なページへのアクセスは無料・無制限、無料プランのビルドは月500回まで）。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
+  <details><summary>Wix や Squarespace でサイトのプランを解約すると、ドメインも消える？</summary><p>消えません。どちらもサイトのプランとドメインは別の契約で、プランを解約してもドメインは解約されません（Wix・Squarespace 公式）。ドメインの自動更新はオンのままにしておきます。</p></details>
+  <details><summary>毎月の費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます（Cloudflare 公式：静的なページへのアクセスは無料・無制限、無料プランのビルドは月500回まで）。かかるのは、今までどおりのドメイン代（管理会社へ。.au は1〜5年ごとの更新）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
   <details><summary>ドメインごとCloudflareに移した方がいい？</summary><p>必要ありません。そもそも Cloudflare のドメイン管理（Cloudflare Registrar）は .com.au を扱っていません（2026年10月時点の公式一覧）。管理会社はそのままで、案内表だけ移します。</p></details>
   <details><summary>新しいドメインを取る場合は？</summary><p>1回目の面談のあとにお客様名義で購入してもらいます。DNSの突き合わせが不要になるので、2回目で公開しやすくなります。</p></details>
 </section>
 
 <section class="stage sources" id="sources">
-  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24 確認</span><h2>出典</h2></div>
-  <p class="lead2">このページの内容は、2026年10月24日に下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
+  <div class="stage-head reveal"><span class="stage-num">典</span><span class="stage-tag">SOURCES · 2026-10-24・25 確認</span><h2>出典</h2></div>
+  <p class="lead2">このページの内容は、2026年10月24日・25日の2回、下の公式ページと突き合わせました。サービスの画面や名前は変わることがあるので、作業のときは画面の表示を優先してください。</p>
   <ul class="src">
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/" target="_blank" rel="noopener">Cloudflare：ドメインの追加（Full setup）</a>：Domains → Onboard a domain、DNSSEC は先にオフ、古いネームサーバーは消す、反映は最大24時間</li>
     <li><a href="https://developers.cloudflare.com/dns/zone-setups/troubleshooting/pending-nameservers/" target="_blank" rel="noopener">Cloudflare：ネームサーバーが反映されないとき</a>：Overview ページから再チェックを依頼、よくある原因</li>
@@ -694,6 +696,13 @@ https://:version.:project.pages.dev/*
     <li><a href="https://support.google.com/a/answer/174124" target="_blank" rel="noopener">Google Workspace：DKIM</a>：google._domainkey（TXT）</li>
     <li><a href="https://support.google.com/webmasters/answer/9008080" target="_blank" rel="noopener">Google Search Console：所有権の確認</a>：ドメインは DNS の TXT で確認、消すと外れる</li>
     <li><a href="https://support.wix.com/en/article/changing-nameserver-ns-records-for-a-wix-domain" target="_blank" rel="noopener">Wix：ネームサーバーの変更</a>・<a href="https://support.wix.com/en/article/canceling-your-premium-plan-and-domain" target="_blank" rel="noopener">プランとドメインの解約</a></li>
+    <li><a href="https://www.acma.gov.au/avoid-sending-spam" target="_blank" rel="noopener">ACMA：スパムを送らないために</a>：同意・送り主の表示・配信停止（5営業日以内）</li>
+    <li><a href="https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes" target="_blank" rel="noopener">Google：URLが変わるサイトの引っ越し</a>：301 で評価は失われない、転送は少なくとも1年</li>
+    <li><a href="https://developers.cloudflare.com/fundamentals/account/create-account/" target="_blank" rel="noopener">Cloudflare：アカウント作成</a>：dash.cloudflare.com/sign-up、事業用は共有アドレスがおすすめ</li>
+    <li><a href="https://developers.cloudflare.com/pages/configuration/build-configuration/" target="_blank" rel="noopener">Cloudflare Pages：ビルドの設定</a>：フレームワークなしは Build command を空欄、または exit 0</li>
+    <li><a href="https://docs.github.com/en/apps/using-github-apps/installing-a-github-app-from-a-third-party" target="_blank" rel="noopener">GitHub：アプリの許可</a>：Only select repositories</li>
+    <li><a href="https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace" target="_blank" rel="noopener">Google Workspace：MX レコード</a>：smtp.google.com（以前からの aspmx も有効）</li>
+    <li><a href="https://support.squarespace.com/hc/en-us/articles/360027504092-Manage-your-Squarespace-billing" target="_blank" rel="noopener">Squarespace：請求の管理</a>：サイトとドメインは別々に請求</li>
   </ul>
   <p class="src-note">公式ページに書かれていないため、画面で確かめてほしいもの：Redirect Rule のテンプレート名、ネームサーバー再チェックのボタン名。</p>
 </section>
