@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>サイト公開の手順｜Cloudflare</title>
+<meta name="description" content="契約からWebサイト公開まで、お客様と制作側がそれぞれ何をするかを7段階・1ステップずつまとめた手順書（Cloudflare Pages）。">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="サイト公開の手順｜Cloudflare">
+<meta property="og:description" content="契約からWebサイト公開まで、お客様と制作側がそれぞれ何をするかを7段階でまとめた手順書。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@600;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7; --paper-2:#efe7d8; --card:#fffdf8;
+  --ink:#1d2233; --ink-2:#4a5068; --ink-3:#7a7f92;
+  --rule:#d9cfbd; --accent:#d9480f; --accent-soft:#fbe3d6;
+  --client:#1f6f5c; --client-soft:#dcefe8;
+  --me:#3b4fa8; --me-soft:#e1e5f6;
+  --warn:#9c2d12; --warn-soft:#fde8de;
+  --code:#1d2233; --code-ink:#f3eee4;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#16181f; --paper-2:#1d2029; --card:#20232d;
+    --ink:#ece6da; --ink-2:#b9b3a8; --ink-3:#8d887f;
+    --rule:#353845; --accent:#ff7a3d; --accent-soft:#3a2418;
+    --client:#5cc4a6; --client-soft:#173229;
+    --me:#93a4ff; --me-soft:#1f2645;
+    --warn:#ff9c7a; --warn-soft:#3a1d14;
+    --code:#0f1116; --code-ink:#e9e3d6;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Zen Kaku Gothic New",system-ui,sans-serif;font-size:16px;line-height:1.85;letter-spacing:.02em}
+a{color:inherit}
+code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.86em;background:var(--paper-2);padding:.1em .4em;border-radius:4px;word-break:break-all}
+strong{font-weight:700;background:linear-gradient(transparent 62%,var(--accent-soft) 62%)}
+
+/* top bar: one row */
+.bar{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;gap:16px;padding:0 20px;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.bar .brand{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:15px;text-decoration:none;white-space:nowrap}
+.bar .brand span{color:var(--accent)}
+.bar .spacer{flex:1}
+.seg{display:flex;border:1px solid var(--rule);border-radius:999px;padding:3px;background:var(--card)}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink-2);font:500 14px/1 "Zen Kaku Gothic New",sans-serif;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button[data-f="client"][aria-pressed="true"]{background:var(--client);color:#fff}
+.seg button[data-f="me"][aria-pressed="true"]{background:var(--me);color:#fff}
+.seg-label{font-size:12px;color:var(--ink-3);white-space:nowrap}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{padding:72px 0 40px;border-bottom:1px solid var(--rule)}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin:0 0 18px}
+.hero h1{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:clamp(40px,8vw,76px);line-height:1.15;letter-spacing:.01em;margin:0 0 24px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.lead{font-size:18px;color:var(--ink-2);max-width:40em;margin:0 0 28px}
+.meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:var(--ink-3)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px}
+.chip.client{background:var(--client-soft);color:var(--client)}
+.chip.me{background:var(--me-soft);color:var(--me)}
+.chip i{width:8px;height:8px;border-radius:50%;background:currentColor}
+
+/* overview */
+.overview{padding:56px 0 24px}
+.h2s{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:28px;margin:0 0 8px;line-height:1.4}
+.sub{color:var(--ink-2);margin:0 0 28px}
+.steps{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.steps li{border-bottom:1px solid var(--rule)}
+.steps a{display:grid;grid-template-columns:56px minmax(0,1.1fr) minmax(0,1.3fr) minmax(0,1fr) 112px;gap:16px;align-items:start;padding:18px 4px;text-decoration:none;transition:background .2s}
+.steps a:hover{background:var(--paper-2)}
+.steps .n{font-family:"DM Serif Display",serif;font-size:40px;line-height:1;color:var(--accent)}
+.steps .t{font-weight:700;font-size:16px;display:block;margin-bottom:4px}
+.steps .who{font-size:14px;color:var(--ink-2);line-height:1.7}
+.steps .who b{display:block;font-size:11px;letter-spacing:.12em;font-weight:700;margin-bottom:2px}
+.steps .who.c b{color:var(--client)} .steps .who.m b{color:var(--me)}
+.steps .d{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);text-align:right;padding-top:6px}
+.steps .bar-p{display:block;height:3px;background:var(--rule);border-radius:2px;margin-top:8px;overflow:hidden}
+.steps .bar-p i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+.steps li.key a{background:var(--accent-soft)}
+.steps li.key .t::after{content:"いちばん大事";font-size:11px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:999px;margin-left:8px;vertical-align:2px;display:inline-block;white-space:nowrap}
+
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:40px 0 0}
+.gloss div{background:var(--card);padding:16px 18px;box-shadow:0 0 0 1px var(--rule)}
+.gloss dt{font-weight:700;font-size:15px}
+.gloss dt small{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:6px}
+.gloss dd{margin:4px 0 0;font-size:14px;color:var(--ink-2);line-height:1.7}
+
+/* stages */
+.stage{padding:72px 0 24px;border-top:1px solid var(--rule);margin-top:48px}
+.stage-head{display:grid;grid-template-columns:auto 1fr;gap:4px 24px;align-items:end;margin-bottom:20px}
+.stage-num{font-family:"DM Serif Display",serif;font-size:clamp(84px,14vw,128px);line-height:.8;color:var(--accent);grid-row:span 2}
+.stage-tag{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;color:var(--ink-3)}
+.stage h2{font-family:"Zen Old Mincho",serif;font-weight:900;font-size:clamp(26px,4.4vw,36px);line-height:1.35;margin:0}
+.stage .lead2{font-size:17px;color:var(--ink-2);margin:0 0 28px;max-width:42em}
+.progress{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-3);margin:-12px 0 24px}
+
+.role{border-radius:14px;padding:24px 24px 18px;margin:0 0 20px;background:var(--card);border:1px solid var(--rule);border-left:6px solid var(--rule)}
+.role.client{border-left-color:var(--client)}
+.role.me{border-left-color:var(--me)}
+.role-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+.role-h h3{margin:0;font-size:19px;font-weight:700}
+.role.client .role-h h3{color:var(--client)} .role.me .role-h h3{color:var(--me)}
+.role-h .time{font-size:13px;color:var(--ink-3)}
+.role h4{font-size:15px;font-weight:700;margin:22px 0 8px;padding-top:14px;border-top:1px dashed var(--rule)}
+.role h4:first-of-type{border-top:0;padding-top:0;margin-top:6px}
+.role p{margin:10px 0}
+
+ul.check{list-style:none;margin:0;padding:0}
+ul.check li{position:relative;padding:8px 0 8px 36px;border-bottom:1px solid color-mix(in srgb,var(--rule) 55%,transparent)}
+ul.check li:last-child{border-bottom:0}
+ul.check input{position:absolute;left:0;top:11px;width:22px;height:22px;margin:0;appearance:none;-webkit-appearance:none;border:2px solid var(--ink-3);border-radius:6px;cursor:pointer;background:var(--card);transition:all .15s}
+ul.check input:checked{background:var(--accent);border-color:var(--accent)}
+ul.check input:checked::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+ul.check li:has(input:checked) label{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--ink-3)}
+ul.check label{cursor:pointer;display:block}
+
+ol.do{counter-reset:s;list-style:none;margin:0;padding:0}
+ol.do>li{counter-increment:s;position:relative;padding:8px 0 8px 44px}
+ol.do>li::before{content:counter(s);position:absolute;left:0;top:8px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:"DM Serif Display",serif;font-size:16px;display:grid;place-items:center;line-height:1}
+ol.do ul{margin:6px 0 0;padding-left:1.2em;font-size:15px;color:var(--ink-2)}
+
+.code{position:relative;margin:12px 0 16px}
+.code pre{margin:0;background:var(--code);color:var(--code-ink);border-radius:10px;padding:16px 18px;overflow-x:auto;font-family:"JetBrains Mono",monospace;font-size:13.5px;line-height:1.7}
+.code button{position:absolute;top:8px;right:8px;appearance:none;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:var(--code-ink);font:500 12px/1 "Zen Kaku Gothic New",sans-serif;padding:7px 10px;border-radius:6px;cursor:pointer}
+.code button:hover{background:rgba(255,255,255,.18)}
+
+.note{border-radius:10px;padding:14px 18px;margin:16px 0;font-size:15px;background:var(--paper-2)}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.note.warn strong{background:none}
+.note b.lbl{display:block;font-size:12px;letter-spacing:.1em;margin-bottom:2px}
+
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin:14px 0 18px}
+.tbl th{text-align:left;font-size:12px;letter-spacing:.08em;color:var(--ink-3);font-weight:700;border-bottom:2px solid var(--ink);padding:8px 10px 8px 0}
+.tbl td{border-bottom:1px solid var(--rule);padding:10px 10px 10px 0;vertical-align:top;line-height:1.65}
+.tbl td:first-child{font-weight:700}
+
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 36px 18px 0;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:12px;font-family:"DM Serif Display",serif;font-size:28px;color:var(--accent);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;color:var(--ink-2)}
+
+footer{margin:80px 0 0;padding:32px 0 48px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink-3)}
+footer button{appearance:none;border:1px solid var(--rule);background:var(--card);color:var(--ink-2);font:500 13px "Zen Kaku Gothic New",sans-serif;padding:8px 14px;border-radius:8px;cursor:pointer;margin-top:12px}
+
+/* filtering */
+body[data-f="client"] .role.me, body[data-f="me"] .role.client{display:none}
+body[data-f="client"] .steps .who.m, body[data-f="me"] .steps .who.c{display:none}
+body[data-f="client"] .steps a, body[data-f="me"] .steps a{grid-template-columns:56px minmax(0,1.1fr) minmax(0,2.3fr) 112px}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:640px){
+  .bar{padding:0 12px;gap:8px}
+  .bar .brand{font-size:14px}
+  .seg-label{display:none}
+  .seg button{padding:8px 10px;font-size:13px}
+  .wrap{padding:0 16px}
+  .hero{padding:48px 0 32px}
+  .lead{font-size:16px}
+  .steps a, body[data-f] .steps a{grid-template-columns:40px minmax(0,1fr);gap:4px 12px}
+  .steps a>*:not(.n){grid-column:2}
+  .steps .n{font-size:30px;grid-row:span 3}
+  .steps .d{text-align:left;padding-top:0}
+  .role{padding:20px 16px 14px}
+  .stage-head{gap:2px 16px}
+  .tbl, .tbl tbody, .tbl tr, .tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{border-bottom:1px solid var(--rule);padding:10px 0}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td:not(:first-child){font-size:14px;color:var(--ink-2)}
+}
+</style>
+</head>
+<body data-f="all">
+
+<header class="bar">
+  <a class="brand" href="#top">サイト公開の手順<span>.</span></a>
+  <span class="spacer"></span>
+  <span class="seg-label">表示：</span>
+  <div class="seg" role="group" aria-label="表示する担当">
+    <button type="button" data-f="all" aria-pressed="true">全部</button>
+    <button type="button" data-f="client" aria-pressed="false">お客様</button>
+    <button type="button" data-f="me" aria-pressed="false">制作側</button>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+
+<section class="hero">
+  <p class="kicker">Website launch · Cloudflare Pages</p>
+  <h1><span style="display:inline-block">契約から</span><span style="display:inline-block">公開まで、</span><br><em>7</em>つの段階。</h1>
+  <p class="lead">早ければ2〜3週間、確認待ちが長いと1〜2か月。お客様と制作側がそれぞれ何をするかを、1ステップずつ分けて書いています。上の「表示」で自分の担当だけに絞れます。チェック欄はこの端末に保存されます。</p>
+  <div class="meta"><span>2026年10月時点</span><span>サイトの置き場所：Cloudflare Pages</span><span>ドメインの管理会社はそのまま</span></div>
+  <div class="legend"><span class="chip client"><i></i>お客様がやること</span><span class="chip me"><i></i>制作側がやること</span></div>
+</section>
+
+<section class="overview">
+  <h2 class="h2s">全体の流れ</h2>
+  <p class="sub">いちばん大事なのは、段階4（ドメインの引っ越し）でメールを止めないことです。</p>
+  <ol class="steps">
+    <li><a href="#s1"><span class="n">1</span><span><span class="t">準備</span><span class="bar-p"><i data-p="s1"></i></span></span><span class="who c"><b>お客様</b>ドメインのログイン確認・素材・Cloudflare登録と招待</span><span class="who m"><b>制作側</b>今のサイトとDNSを記録</span><span class="d">1〜3日</span></a></li>
+    <li><a href="#s2"><span class="n">2</span><span><span class="t">試作と確認</span><span class="bar-p"><i data-p="s2"></i></span></span><span class="who c"><b>お客様</b>確認用URLを見て直す所を伝える</span><span class="who m"><b>制作側</b>作る・直す</span><span class="d">1〜2週間</span></a></li>
+    <li><a href="#s3"><span class="n">3</span><span><span class="t">Cloudflareに載せる</span><span class="bar-p"><i data-p="s3"></i></span></span><span class="who c"><b>お客様</b>なし</span><span class="who m"><b>制作側</b>Cloudflare Pagesに置く</span><span class="d">30分</span></a></li>
+    <li class="key"><a href="#s4"><span class="n">4</span><span><span class="t">ドメインの引っ越し</span><span class="bar-p"><i data-p="s4"></i></span></span><span class="who c"><b>お客様</b>ネームサーバーを2つ書き換える（画面共有で一緒に）</span><span class="who m"><b>制作側</b>DNSの中身を写して確認</span><span class="d">30分＋待ち〜48時間</span></a></li>
+    <li><a href="#s5"><span class="n">5</span><span><span class="t">ドメインとサイトをつなぐ</span><span class="bar-p"><i data-p="s5"></i></span></span><span class="who c"><b>お客様</b>なし</span><span class="who m"><b>制作側</b>独自ドメイン・www・古いURLの転送</span><span class="d">30分</span></a></li>
+    <li><a href="#s6"><span class="n">6</span><span><span class="t">公開日のチェック</span><span class="bar-p"><i data-p="s6"></i></span></span><span class="who c"><b>お客様</b>メールの送受信・スマホで確認</span><span class="who m"><b>制作側</b>全項目を確認</span><span class="d">1時間</span></a></li>
+    <li><a href="#s7"><span class="n">7</span><span><span class="t">公開後</span><span class="bar-p"><i data-p="s7"></i></span></span><span class="who c"><b>お客様</b>古いサービスの解約・自動更新をオン</span><span class="who m"><b>制作側</b>引き継ぎメモを渡す</span><span class="d">1〜2週間後</span></a></li>
+  </ol>
+
+  <dl class="gloss">
+    <div><dt>ドメイン</dt><dd>サイトの住所（例：example.com.au）。毎年お金を払って借りているもの。</dd></div>
+    <div><dt>ドメイン管理会社</dt><dd>ドメインを買った会社。GoDaddy、VentraIP、Crazy Domains、Wix、Squarespace など。</dd></div>
+    <div><dt>Cloudflare<small>クラウドフレア</small></dt><dd>サイトの置き場所と、ドメインの案内係を無料で引き受けてくれるサービス。</dd></div>
+    <div><dt>DNS<small>ディーエヌエス</small></dt><dd>「このドメインのサイトはここ、メールはここ」という案内表。</dd></div>
+    <div><dt>ネームサーバー</dt><dd>その案内表をどの会社が持つかの指定。これをCloudflareに変えるのが段階4。</dd></div>
+  </dl>
+</section>
+
+<!-- 1 -->
+<section class="stage" id="s1">
+  <div class="stage-head reveal"><span class="stage-num">1</span><span class="stage-tag">STAGE 01 · 1〜3日</span><h2>契約直後の準備</h2></div>
+  <p class="lead2">ここで止まると全部が遅れます。特に「ドメイン管理会社にログインできるか」は、最初の週に必ず確かめます。</p>
+  <p class="progress" data-prog="s1"></p>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s1c1"><label for="s1c1">ドメインをどこで買ったか確かめる（分からなければ制作側が調べます）</label></li>
+      <li><input type="checkbox" id="s1c2"><label for="s1c2">その会社の管理画面に、自分でログインできるか試す。パスワードが分からないときは今のうちに再設定する</label></li>
+      <li><input type="checkbox" id="s1c3"><label for="s1c3">前の制作会社や知り合いがドメインを持っている場合は、その人に連絡してログインをもらう（いちばん時間がかかるので最初に）</label></li>
+      <li><input type="checkbox" id="s1c4"><label for="s1c4">今のメールは何で使っているか教える（Gmailの会社版＝Google Workspace、Outlook＝Microsoft 365、サーバー付属のメール、など）</label></li>
+      <li><input type="checkbox" id="s1c5"><label for="s1c5">今のサイトをどこで作っているか教える（Wix、Squarespace、WordPress など）。<strong>解約はまだしない</strong></label></li>
+      <li><input type="checkbox" id="s1c6"><label for="s1c6">ロゴ・写真・文章・営業時間・住所・電話番号などの素材を送る（Googleドライブや LINE でOK）</label></li>
+      <li><input type="checkbox" id="s1c7"><label for="s1c7">Cloudflareの無料アカウントを作り、制作側を招待する（下の手順）</label></li>
+    </ul>
+    <h4>Cloudflareアカウントの作り方</h4>
+    <ol class="do">
+      <li><code>dash.cloudflare.com/sign-up</code> を開く</li>
+      <li>お店の共有メールアドレスとパスワードを入れて登録（個人のアドレスより、担当が変わっても困らないアドレスがおすすめ）</li>
+      <li>届いた確認メールのボタンを押す</li>
+      <li>右上の人のマーク → Profile → Authentication で、2段階認証（スマホの認証アプリ）をオンにする</li>
+      <li>左のメニューの Manage Account → Members → Invite で、制作側のメールアドレスを招待する（権限は Administrator）</li>
+    </ol>
+    <div class="note"><b class="lbl">なぜお客様のアカウント？</b>サイトもドメインの設定も<strong>お客様の名義</strong>になります。制作側との契約が終わっても、招待を外すだけでそのまま使い続けられます。</div>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s1m1"><label for="s1m1">招待メールを受けて、お客様のアカウントに入れるか確かめる</label></li>
+      <li><input type="checkbox" id="s1m2"><label for="s1m2">ドメイン管理会社を調べる：<code>whois example.com.au</code>（.au は auda.org.au の WHOIS でも可）。Registrar の欄を見る</label></li>
+      <li><input type="checkbox" id="s1m3"><label for="s1m3">今のDNSを記録する（段階4でメールを止めないため）</label></li>
+    </ul>
+    <div class="code"><button type="button">コピー</button><pre>dig example.com.au NS +short
+dig example.com.au A +short
+dig www.example.com.au CNAME +short
+dig example.com.au MX +short
+dig example.com.au TXT +short
+dig _dmarc.example.com.au TXT +short
+dig google._domainkey.example.com.au TXT +short
+dig selector1._domainkey.example.com.au CNAME +short</pre></div>
+    <p>結果はそのままテキストで保存。できれば管理会社のDNS画面のスクショももらう（dig では拾えないレコードがあるため）。</p>
+    <ul class="check">
+      <li><input type="checkbox" id="s1m4"><label for="s1m4">今のサイトの全ページのURLを一覧にする（<code>/sitemap.xml</code> があればそこから。なければメニューを全部たどる）。段階5で古いURLを転送するため</label></li>
+      <li><input type="checkbox" id="s1m5"><label for="s1m5">今のサイトの文章・画像を保存する（解約したら消える）</label></li>
+      <li><input type="checkbox" id="s1m6"><label for="s1m6">GitHubに非公開のリポジトリを作る</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="stage" id="s2">
+  <div class="stage-head reveal"><span class="stage-num">2</span><span class="stage-tag">STAGE 02 · 1〜2週間</span><h2>試作と確認</h2></div>
+  <p class="lead2">公開前のサイトは「〇〇.pages.dev」という確認用URLで見てもらいます。このURLはGoogle検索には出ないようにしてあります。</p>
+  <p class="progress" data-prog="s2"></p>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s2c1"><label for="s2c1">確認用URLをスマホとパソコンの両方で開く</label></li>
+      <li><input type="checkbox" id="s2c2"><label for="s2c2">直してほしい所をまとめて送る（スクショ＋一言がいちばん伝わります）</label></li>
+      <li><input type="checkbox" id="s2c3"><label for="s2c3">電話番号・住所・営業時間・料金は、一文字ずつ確かめる（間違いがいちばん困る箇所）</label></li>
+      <li><input type="checkbox" id="s2c4"><label for="s2c4">問い合わせフォームがあれば、自分で送ってみて届くか確かめる</label></li>
+      <li><input type="checkbox" id="s2c5"><label for="s2c5">「これでOK」をメールかメッセージで伝える（これが公開日を決める合図）</label></li>
+    </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s2m1"><label for="s2m1">直しの回数と範囲を契約どおりに管理する（範囲外は先に追加料金を伝える）</label></li>
+      <li><input type="checkbox" id="s2m2"><label for="s2m2">確認用URLを検索に出さない設定を入れる（段階3の <code>_headers</code>）</label></li>
+      <li><input type="checkbox" id="s2m3"><label for="s2m3">旧サイトの全ページと突き合わせ、情報の抜けがないか確かめる（協賛ロゴ・規約・採用など脇の情報ほど抜ける）</label></li>
+      <li><input type="checkbox" id="s2m4"><label for="s2m4">OKをもらったら、公開日を一緒に決める。<strong>金曜の夕方と店の繁忙日は避ける</strong>（何かあったときすぐ直せるように）</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="stage" id="s3">
+  <div class="stage-head reveal"><span class="stage-num">3</span><span class="stage-tag">STAGE 03 · 30分</span><h2>サイトをCloudflareに載せる</h2></div>
+  <p class="lead2">お客様の作業はありません。制作側が、お客様のCloudflareアカウントの中にサイトを置きます。</p>
+  <p class="progress" data-prog="s3"></p>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <h4>A. GitHubとつなぐ方法（おすすめ。push すると自動で更新される）</h4>
+    <ol class="do">
+      <li>dash.cloudflare.com にログインし、左上のアカウント名で<strong>お客様のアカウント</strong>に切り替える（自分のアカウントに作らないよう注意）</li>
+      <li>左メニューの Workers &amp; Pages を開く（Compute の中にあることもある）</li>
+      <li>Create → Pages タブ → Connect to Git</li>
+      <li>GitHub を選び、このサイトのリポジトリだけを許可する（Only select repositories）</li>
+      <li>設定を入れる
+        <ul>
+          <li>Project name：お店の名前を英小文字で（例：shop-name）。これが「〇〇.pages.dev」になる</li>
+          <li>Production branch：main</li>
+          <li>Framework preset：None（手書きのHTMLの場合）</li>
+          <li>Build command：空欄</li>
+          <li>Build output directory：HTMLが入っているフォルダ（リポジトリ直下なら <code>/</code>、public に入れていれば <code>public</code>）</li>
+        </ul>
+      </li>
+      <li>Save and Deploy → 1分ほどで <code>https://〇〇.pages.dev</code> が開けるようになる</li>
+    </ol>
+    <h4>B. 手元から直接上げる方法（GitHubをお客様のアカウントとつなぎたくないとき）</h4>
+    <div class="code"><button type="button">コピー</button><pre>npx wrangler login
+npx wrangler pages deploy ./public --project-name=shop-name</pre></div>
+    <p>ログイン時にお客様のアカウントを選ぶ。Bで作ったプロジェクトは、後からA（GitHub連携）に切り替えられないので、最初にどちらか決める。</p>
+    <h4>確認用URLを検索に出さない設定</h4>
+    <p>HTMLと同じフォルダに <code>_headers</code> というファイルを置く。pages.dev の方だけ検索に出なくなり、本番のドメインには影響しないので、公開時に外し忘れる心配がありません。</p>
+    <div class="code"><button type="button">コピー</button><pre>https://:project.pages.dev/*
+  X-Robots-Tag: noindex</pre></div>
+    <div class="note">補足：Cloudflare は新しい作りの Workers（静的アセット）も勧めていますが、お店のサイトなら Pages で十分です。問い合わせフォームや投稿機能（Workers・D1 を使う部品）を付ける場合も、同じアカウントの中に置きます。</div>
+    <ul class="check">
+      <li><input type="checkbox" id="s3m1"><label for="s3m1">お客様のアカウントに Pages プロジェクトを作った</label></li>
+      <li><input type="checkbox" id="s3m2"><label for="s3m2"><code>〇〇.pages.dev</code> が開ける</label></li>
+      <li><input type="checkbox" id="s3m3"><label for="s3m3"><code>_headers</code> を入れて、<code>curl -sI https://〇〇.pages.dev | grep -i robots</code> で noindex が出る</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="stage" id="s4">
+  <div class="stage-head reveal"><span class="stage-num">4</span><span class="stage-tag">STAGE 04 · 作業30分＋待ち数時間〜48時間</span><h2>ドメインをCloudflareに引っ越す</h2></div>
+  <p class="lead2">ドメインは今の管理会社に残したままで、「案内表（DNS）」の置き場だけをCloudflareに移します。中身をそっくり写してから移すので、<strong>この段階では今のサイトもメールもそのまま動き続けます</strong>。公開日の3〜7日前に済ませておくと、公開日はつなぎ替えるだけになります。</p>
+  <p class="progress" data-prog="s4"></p>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること（前半）</h3></div>
+    <ol class="do">
+      <li>お客様のCloudflareアカウントで、Account home の Add a domain（または Add a site）を押す</li>
+      <li>ドメイン名を www なしで入れる（例：example.com.au）。Quick scan for DNS records を選んで Continue</li>
+      <li>プランは Free を選ぶ</li>
+      <li>取り込まれたDNSレコードを、段階1で記録したものと<strong>1行ずつ突き合わせる</strong>。足りないものは Add record で足す</li>
+    </ol>
+    <table class="tbl">
+      <thead><tr><th>確かめるもの</th><th>何のため</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td>MX（全部）</td><td>メールを受け取る</td><td>優先度（Priority）の数字も同じに</td></tr>
+        <tr><td>TXT：v=spf1 で始まるもの</td><td>メールが迷惑メール扱いされないため</td><td>1つのドメインに1行だけ</td></tr>
+        <tr><td>TXT：_dmarc</td><td>同上</td><td>なければ無理に足さなくてよい</td></tr>
+        <tr><td>TXT または CNAME：〇〇._domainkey（DKIM）</td><td>同上</td><td>Google は google._domainkey、Microsoft は selector1/selector2</td></tr>
+        <tr><td>CNAME：autodiscover</td><td>Outlook の自動設定</td><td>Microsoft 365 の場合</td></tr>
+        <tr><td>TXT：google-site-verification など</td><td>Google や Meta の持ち主確認</td><td>消すと後で確認し直しになる</td></tr>
+        <tr><td>A・CNAME（@ と www）</td><td>今のサイト</td><td>公開日までそのまま。段階5で置き換える</td></tr>
+      </tbody>
+    </table>
+    <ol class="do" start="5" style="counter-reset:s 4">
+      <li>メール関係のレコード（MX の行き先、mail.〇〇、autodiscover など）は、Proxy status を<strong>グレーの雲（DNS only）</strong>にする</li>
+      <li>Continue を押すと、Cloudflare のネームサーバーが2つ表示される（例：<code>ada.ns.cloudflare.com</code> と <code>bob.ns.cloudflare.com</code>。名前は毎回違う）。メモしてお客様に送る</li>
+      <li>管理会社で DNSSEC がオンになっていないか確かめる（<code>dig example.com.au DS +short</code> で何か出たらオン）。オンなら、次の作業の<strong>前に</strong>オフにしてもらう</li>
+    </ol>
+    <div class="note warn"><b class="lbl">ここを間違えると止まる</b>オレンジの雲のままだとメールが届かなくなります。DNSSEC がオンのままネームサーバーを変えると、サイトもメールもつながらなくなります。</div>
+  </div>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3><span class="time">15分・画面共有で一緒にやるのがおすすめ</span></div>
+    <ol class="do">
+      <li>ドメイン管理会社にログインする</li>
+      <li>該当のドメインを開き、「ネームサーバー」（Nameservers、DNS servers と書かれていることも）を探す</li>
+      <li>「自分で指定する」（Custom、Use my own nameservers など）を選ぶ</li>
+      <li>今入っているネームサーバーをすべて消し、制作側から届いた2つを入れる（3つ目以降は入れない）</li>
+      <li>保存する。確認メールやSMSが届いたら承認する</li>
+    </ol>
+    <p>画面の名前は会社ごとに違います。見つからなければ、管理会社のヘルプで「change nameservers」と検索するか、そのまま制作側に画面を見せてください。</p>
+    <ul class="check">
+      <li><input type="checkbox" id="s4c1"><label for="s4c1">ネームサーバーを2つに書き換えて保存した</label></li>
+      <li><input type="checkbox" id="s4c2"><label for="s4c2">（DNSSEC がオンだった場合）先にオフにした</label></li>
+    </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること（後半）</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s4m1"><label for="s4m1">待つ。ふつう数分〜数時間、長いときは48時間ほど。Cloudflare の画面で Check nameservers now を押すと早く確認されることがある</label></li>
+      <li><input type="checkbox" id="s4m2"><label for="s4m2">お客様のアドレスに「Active」のメールが届いたら完了。<code>dig example.com.au NS +short</code> で cloudflare が返ることも確かめる</label></li>
+      <li><input type="checkbox" id="s4m3"><label for="s4m3">お客様に、外のアドレス（個人のGmailなど）とお店のアドレスの間で、<strong>メールを行きも帰りも送ってもらう</strong>。届かないときはすぐにMXとSPFを見直す</label></li>
+      <li><input type="checkbox" id="s4m4"><label for="s4m4">今のサイトがそのまま表示されていることも確かめる</label></li>
+      <li><input type="checkbox" id="s4m5"><label for="s4m5">（任意）DNSSEC を使いたい場合は、Cloudflare の DNS → Settings で有効にし、表示された DS レコードを管理会社に登録してもらう</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="stage" id="s5">
+  <div class="stage-head reveal"><span class="stage-num">5</span><span class="stage-tag">STAGE 05 · 公開日 · 30分</span><h2>独自ドメインをサイトにつなぐ</h2></div>
+  <p class="lead2">公開日にやるのはこの段階です。旧サイトから新サイトへの切り替えは数分で済みます。お客様の作業はありません。</p>
+  <p class="progress" data-prog="s5"></p>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <h4>切り替えの前に</h4>
+    <ul class="check">
+      <li><input type="checkbox" id="s5m1"><label for="s5m1"><code>_redirects</code> ファイルを作り、旧サイトのURLを新サイトのページへ転送する（Googleの評価と、お客さんのブックマークを引き継ぐため）</label></li>
+    </ul>
+    <div class="code"><button type="button">コピー</button><pre>/about-us        /about/     301
+/services.html   /services/  301
+/contact-us      /contact/   301
+/blog/*          /news/      301</pre></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s5m2"><label for="s5m2">確認用に HTML へ noindex を入れていたら外す（<code>_headers</code> だけならそのままでOK）</label></li>
+      <li><input type="checkbox" id="s5m3"><label for="s5m3"><code>sitemap.xml</code>、<code>robots.txt</code>、各ページの canonical を本番ドメインにする</label></li>
+      <li><input type="checkbox" id="s5m4"><label for="s5m4">push して pages.dev で最終確認</label></li>
+    </ul>
+    <h4>切り替え</h4>
+    <ol class="do">
+      <li>Cloudflare の DNS → Records で、旧サイト向けの @ と www の A・CNAME を削除する（<strong>メールのレコードは絶対に消さない</strong>）。削除した内容はメモしておく（戻すとき用）</li>
+      <li>Workers &amp; Pages → このプロジェクト → Custom domains → Set up a custom domain</li>
+      <li><code>example.com.au</code> を入れて Continue → Activate domain（同じアカウント内なのでDNSは自動で作られる）</li>
+      <li>同じように <code>www.example.com.au</code> も追加する</li>
+      <li>両方の Status が Active になるまで待つ（ふつう数分。https の鍵＝SSL証明書も自動で発行される）</li>
+    </ol>
+    <h4>仕上げ</h4>
+    <ol class="do" start="6" style="counter-reset:s 5">
+      <li>www ありを www なしにまとめる：ドメインの Rules → Redirect Rules → テンプレート「Redirect from WWW to root」を使う（301、クエリ文字列を残す）</li>
+      <li>SSL/TLS → Edge Certificates で Always Use HTTPS をオン</li>
+      <li>どちらを本物にするか（www あり／なし）は、旧サイトと同じにするのが安全。旧サイトが www ありなら、手順6は逆向きにする</li>
+    </ol>
+    <div class="note"><b class="lbl">うまくいかなかったときの戻し方</b>Custom domains から両方を外し、手順1でメモした旧サイトのレコードを戻す。数分で旧サイトに戻ります。</div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="stage" id="s6">
+  <div class="stage-head reveal"><span class="stage-num">6</span><span class="stage-tag">STAGE 06 · 公開日 · 1時間</span><h2>公開日のチェックリスト</h2></div>
+  <p class="lead2">切り替えたら、その日のうちに全部確かめます。一つでも×があれば、その場で直すか旧サイトに戻します。</p>
+  <p class="progress" data-prog="s6"></p>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s6c1"><label for="s6c1">自分のスマホで <code>example.com.au</code> を開き、新しいサイトが出るか（古いままなら、Wi-Fiを切って携帯回線で試す）</label></li>
+      <li><input type="checkbox" id="s6c2"><label for="s6c2">お店のアドレスにメールが届くか、お店のアドレスから送れるか</label></li>
+      <li><input type="checkbox" id="s6c3"><label for="s6c3">問い合わせフォームや予約ボタンを実際に使ってみる</label></li>
+      <li><input type="checkbox" id="s6c4"><label for="s6c4">Googleマップ（Googleビジネスプロフィール）、Instagram、Facebook のサイトURLが正しいか確かめる（ドメインが同じならそのままでOK）</label></li>
+    </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s6m1"><label for="s6m1"><code>https://example.com.au</code> と <code>https://www.example.com.au</code> の両方が開き、片方にまとまる</label></li>
+      <li><input type="checkbox" id="s6m2"><label for="s6m2"><code>http://</code>（sなし）で開いても https に移る。鍵マークに警告が出ない</label></li>
+      <li><input type="checkbox" id="s6m3"><label for="s6m3">段階1で作った旧URL一覧を全部開き、正しいページに転送される（<code>curl -sI https://example.com.au/about-us</code> で 301 と行き先を見る）</label></li>
+      <li><input type="checkbox" id="s6m4"><label for="s6m4">存在しないURLで 404 ページが出る</label></li>
+      <li><input type="checkbox" id="s6m5"><label for="s6m5">本番ドメインに noindex が付いていない（<code>curl -sI https://example.com.au | grep -i robots</code> で何も出ない、HTMLにもない）</label></li>
+      <li><input type="checkbox" id="s6m6"><label for="s6m6">iPhone・Android・パソコンで全ページを開き、崩れ・画像切れがない</label></li>
+      <li><input type="checkbox" id="s6m7"><label for="s6m7">電話番号を押すと電話がかかる、地図、SNSのリンク先が正しい</label></li>
+      <li><input type="checkbox" id="s6m8"><label for="s6m8">メールのレコード（MX・SPF・DKIM）が消えていない（段階1の dig をもう一度打って比べる）</label></li>
+      <li><input type="checkbox" id="s6m9"><label for="s6m9">Google Search Console にドメインを登録（持ち主確認のTXTは Cloudflare のDNSに足す）し、sitemap.xml を送る。旧サイトで登録済みなら、確認が切れていないか見る</label></li>
+      <li><input type="checkbox" id="s6m10"><label for="s6m10">GA4 などアクセス解析があれば、計測が入っているかリアルタイムで確かめる</label></li>
+      <li><input type="checkbox" id="s6m11"><label for="s6m11">お客様に「公開しました」と連絡し、上の「お客様がやること」をお願いする</label></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="stage" id="s7">
+  <div class="stage-head reveal"><span class="stage-num">7</span><span class="stage-tag">STAGE 07 · 公開の1〜2週間後</span><h2>公開後（解約・更新・引き継ぎ）</h2></div>
+  <p class="lead2">問題がないことを確かめてから旧サービスを解約します。解約の順番を間違えるとメールやドメインまで消えるので、解約の前に制作側に一言ください。</p>
+  <p class="progress" data-prog="s7"></p>
+
+  <div class="role client reveal">
+    <div class="role-h"><h3>お客様がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s7c1"><label for="s7c1">旧サイトのサービス（Wix・Squarespace など）の<strong>サイトのプランだけ</strong>を解約する。そこでドメインを買った場合、ドメインは別の契約なので<strong>ドメインは解約しない</strong></label></li>
+      <li><input type="checkbox" id="s7c2"><label for="s7c2">メールが旧サーバーに付いている場合、そのサーバーを解約するとメールも止まる。先に制作側とメールの移し先を決める</label></li>
+      <li><input type="checkbox" id="s7c3"><label for="s7c3">ドメインの自動更新をオンにし、登録してあるカードの期限を確かめる（更新切れは、サイトとメールが一度に止まるいちばん多い原因）</label></li>
+      <li><input type="checkbox" id="s7c4"><label for="s7c4">更新のお知らせが届くメールアドレスが、今も使っているものか確かめる</label></li>
+      <li><input type="checkbox" id="s7c5"><label for="s7c5">Cloudflare とドメイン管理会社のログイン情報、2段階認証のバックアップコードを、お店の大事な書類と一緒に保管する</label></li>
+    </ul>
+  </div>
+
+  <div class="role me reveal">
+    <div class="role-h"><h3>制作側がやること</h3></div>
+    <ul class="check">
+      <li><input type="checkbox" id="s7m1"><label for="s7m1">Search Console で「ページが見つからない（404）」が出ていないか、1週間後と1か月後に確かめる。出たら <code>_redirects</code> に足す</label></li>
+      <li><input type="checkbox" id="s7m2"><label for="s7m2">引き継ぎメモを渡す：ドメイン管理会社、更新日、Cloudflare アカウントのメールアドレス、DNSの一覧（何のための行か）、サイトの直し方の連絡先</label></li>
+      <li><input type="checkbox" id="s7m3"><label for="s7m3">保守の契約があるかどうかで、Cloudflare の招待を残すか外すかを決める。保守なしなら、お客様に外してもらう</label></li>
+      <li><input type="checkbox" id="s7m4"><label for="s7m4">請求書の残金があれば公開後に送る（契約どおり）</label></li>
+    </ul>
+    <h4>権利の整理（契約書で決めたとおりにする）</h4>
+    <table class="tbl">
+      <thead><tr><th>もの</th><th>持ち主・名義</th></tr></thead>
+      <tbody>
+        <tr><td>ドメイン</td><td>お客様</td></tr>
+        <tr><td>Cloudflare アカウント</td><td>お客様（制作側は招待されているだけ）</td></tr>
+        <tr><td>お客様が出した文章・写真・ロゴ</td><td>お客様</td></tr>
+        <tr><td>サイトのデザインとコード</td><td>契約書のとおり（使用許諾か、譲渡か）</td></tr>
+        <tr><td>制作側が複数のサイトで使う部品・仕組み（投稿機能など）</td><td>制作側。お客様は使う権利を持つ</td></tr>
+      </tbody>
+    </table>
+    <p>契約書で決めていない場合は、公開の前に決めておきます。</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="stage faq" id="faq">
+  <div class="stage-head reveal"><span class="stage-num">?</span><span class="stage-tag">TROUBLESHOOTING</span><h2>困ったとき・よくある質問</h2></div>
+  <details><summary>ドメイン管理会社にログインできない</summary><p>ログイン画面の「パスワードを忘れた」から再設定。メールも分からなければ、管理会社のサポートに本人確認を依頼します（.au は登録したABNや会社名で確認されることが多い）。</p></details>
+  <details><summary>ドメインが前の制作会社の名義になっている</summary><p>名義をお客様に移してもらうよう依頼します。数日〜数週間かかるので、契約直後に始めます。</p></details>
+  <details><summary>ネームサーバーを変えたのに48時間たっても Active にならない</summary><p>入力ミス（綴り違い・3つ目が残っている）と、DNSSEC がオンのままでないかを確かめます。</p></details>
+  <details><summary>メールが届かなくなった</summary><p>MX が段階1の記録どおりか、メール用の行がオレンジの雲になっていないかを確かめます。</p></details>
+  <details><summary>送ったメールが相手の迷惑メールに入る</summary><p>SPF と DKIM の行が残っているか、SPF が2行になっていないかを確かめます。</p></details>
+  <details><summary>新しいサイトが自分のスマホだけ出ない</summary><p>古い情報が残っているだけのことが多いです。携帯回線に切り替えるか、数時間待ちます。</p></details>
+  <details><summary>「この接続は安全ではありません」と出る</summary><p>Custom domains の Status が Active か確かめます。証明書の発行中なら数分〜数時間待ちます。</p></details>
+  <details><summary>Cloudflare の画面がこの手順書と違う</summary><p>Cloudflare は画面の名前がよく変わります。この手順書は2026年10月時点です。上の検索バーで英語の名前（Custom domains など）を入れると早く見つかります。</p></details>
+  <details><summary>費用はいくらかかる？</summary><p>Cloudflare の無料プランと Pages の無料枠で、お店のサイトなら月額0円で動きます。かかるのは、今までどおりのドメイン代（管理会社へ年に一度）と、メールのサービス代（Google Workspace などを使っている場合）だけです。</p></details>
+  <details><summary>ドメインごとCloudflareに移した方がいい？</summary><p>必要ありません。管理会社はそのままで、案内表だけ移すのがいちばん安全です（.com.au は移せる会社が限られるため）。</p></details>
+  <details><summary>新しいドメインを取る場合は？</summary><p>段階1でお客様名義で購入してもらいます。その場合は段階4の「突き合わせ」が不要で、ネームサーバーを変えるだけです。</p></details>
+</section>
+
+<footer>
+  <p>2026年10月時点の Cloudflare の画面をもとにしています。チェック欄の状態はこの端末のブラウザにだけ保存されます。</p>
+  <button type="button" id="reset">チェックを全部外す</button>
+</footer>
+
+</div>
+</main>
+
+<script>
+(function(){
+  var KEY='wlg-checks-v1', FKEY='wlg-filter';
+  var store={};
+  try{store=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  var boxes=[].slice.call(document.querySelectorAll('ul.check input'));
+  boxes.forEach(function(b){ if(store[b.id]) b.checked=true; b.addEventListener('change',function(){store[b.id]=b.checked; try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){} update();}); });
+
+  function visible(el){return el.offsetParent!==null}
+  function update(){
+    ['s1','s2','s3','s4','s5','s6','s7'].forEach(function(s){
+      var all=[].slice.call(document.querySelectorAll('#'+s+' ul.check input')).filter(visible);
+      var done=all.filter(function(b){return b.checked}).length;
+      var p=document.querySelector('[data-prog="'+s+'"]');
+      if(p) p.textContent=all.length? ('チェック '+done+' / '+all.length) : '';
+      var bar=document.querySelector('[data-p="'+s+'"]');
+      if(bar) bar.style.width=all.length? (done/all.length*100)+'%' : '0';
+    });
+  }
+
+  var btns=[].slice.call(document.querySelectorAll('.seg button'));
+  function setF(f){
+    document.body.setAttribute('data-f',f);
+    btns.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.f===f?'true':'false')});
+    try{localStorage.setItem(FKEY,f)}catch(e){}
+    update();
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){setF(b.dataset.f)})});
+  var saved='all'; try{saved=localStorage.getItem(FKEY)||'all'}catch(e){}
+  setF(saved);
+
+  document.getElementById('reset').addEventListener('click',function(){
+    if(!confirm('チェックを全部外しますか？')) return;
+    store={}; try{localStorage.removeItem(KEY)}catch(e){}
+    boxes.forEach(function(b){b.checked=false}); update();
+  });
+
+  [].slice.call(document.querySelectorAll('.code button')).forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var t=btn.nextElementSibling.textContent;
+      var done=function(){btn.textContent='コピーしました';setTimeout(function(){btn.textContent='コピー'},1500)};
+      if(navigator.clipboard) navigator.clipboard.writeText(t).then(done,function(){});
+    });
+  });
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  } else document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in')});
+})();
+</script>
+</body>
+</html>
